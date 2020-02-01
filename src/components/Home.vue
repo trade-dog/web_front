@@ -1,16 +1,20 @@
 <template>
   <div>
     <nav-bar></nav-bar>
-    <grey-background></grey-background>
+    <grey-background>
+      <card id="basic_info"></card>
+    </grey-background>
+
   </div>
 </template>
 
 <script>
 import NavBar from "./NavBar";
 import GreyBackground from "./GreyBackground";
+import Card from "./Card";
 export default {
   name: "HelloWorld",
-  components: { GreyBackground, NavBar },
+  components: {Card, GreyBackground, NavBar },
   props: {
     msg: String
   }
@@ -22,4 +26,12 @@ export default {
 html {
   font-size: 10px;
 }
+
+  #basic_info {
+    z-index: 1;
+    top: 2em;
+    left: 10em;
+    height: 16em;
+    width: 50em;
+  }
 </style>

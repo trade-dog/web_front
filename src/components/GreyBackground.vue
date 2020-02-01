@@ -1,6 +1,6 @@
 <template>
     <div class="GreyBackground">
-
+        <slot></slot>
     </div>
 </template>
 
@@ -12,8 +12,11 @@
 
 <style scoped>
 .GreyBackground {
+    position: absolute;
     background-color: #F5F7FA;
     height: 20em;
-    width: auto;
+    width: 100%;
+    left: 0;
+    z-index: -1;
 }
 </style>
