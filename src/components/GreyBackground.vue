@@ -1,0 +1,19 @@
+<template>
+    <div class="GreyBackground">
+
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "GreyBackground"
+    }
+</script>
+
+<style scoped>
+.GreyBackground {
+    background-color: #F5F7FA;
+    height: 20em;
+    width: auto;
+}
+</style>
