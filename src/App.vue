@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/Home.vue'
 
 export default {
   name: 'app',
@@ -17,12 +16,11 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  @import url(https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+  @import url(https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css);
+  @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+html{
+  /*font-size: 10px;*/
 }
+  * { font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Noto Sans KR', 'Sans-serif'; }
 </style>
