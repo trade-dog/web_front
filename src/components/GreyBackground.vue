@@ -12,7 +12,6 @@
 
 <style scoped>
 .GreyBackground {
-    position: absolute;
     background-color: #F5F7FA;
     height: 20em;
     width: 100%;

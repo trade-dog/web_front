@@ -1,10 +1,10 @@
 <template>
   <div>
     <nav-bar></nav-bar>
-    <grey-background>
+    <grey-background id="grey_bg">
       <card id="basic_info"></card>
+      <card id="follower_info"></card>
     </grey-background>
-
   </div>
 </template>
 
@@ -14,7 +14,7 @@ import GreyBackground from "./GreyBackground";
 import Card from "./Card";
 export default {
   name: "HelloWorld",
-  components: {Card, GreyBackground, NavBar },
+  components: { Card, GreyBackground, NavBar },
   props: {
     msg: String
   }
@@ -26,12 +26,24 @@ export default {
 html {
   font-size: 10px;
 }
+#grey_bg {
+  position: static;
+}
+#basic_info {
+  float: left;
+  position: relative;
+  top: 2em;
+  left: 10em;
+  height: 16em;
+  width: 50em;
+}
 
-  #basic_info {
-    z-index: 1;
-    top: 2em;
-    left: 10em;
-    height: 16em;
-    width: 50em;
-  }
+#follower_info {
+  float: right;
+  position: relative;
+  top: 2em;
+  right: 10em;
+  width: 20em;
+  height: 16em;
+}
 </style>
