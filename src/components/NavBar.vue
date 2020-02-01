@@ -26,7 +26,7 @@ nav {
 }
 ul {
   list-style-type: none;
-  margin: 0 15em 0;
+  margin: 0 10em 0;
   padding: 0;
   overflow: hidden;
   background-color: #FFFFFF;
