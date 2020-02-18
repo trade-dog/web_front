@@ -1,28 +1,48 @@
 <template>
   <div>
     <nav-bar></nav-bar>
-    <grey-background id="grey_bg">
-      <card id="basic_info">
-        <span class="CardTitle">기본정보</span>
-        <div class="CardContents">
-          <div class="row">
-            <span class="ContentText">내 수익률</span>
-            <span class="FloatArea">
-              <span class="RateVal"> +24</span>
-              <span class="expectMoneyVal counter">%</span>
-            </span>
-          </div>
-          <div class="row">
-            <span class="ContentText">평가금액</span>
-            <span class="FloatArea">
-              <span class="expectMoneyVal"> 1,930,752</span>
-              <span class="expectMoneyVal counter">KRW</span>
-            </span>
-          </div>
-        </div>
-      </card>
-      <card id="follower_info"></card>
+    <grey-background>
+      <div class="flex-container content-area">
+        <card id="basic_info">
+          <span class="CardTitle">기본정보</span>
+<!--          <div class="CardContents">-->
+<!--            <div class="row">-->
+<!--              <span class="ContentText">내 수익률</span>-->
+<!--              <span class="FlexArea">-->
+<!--              <span class="RateVal"> +24</span>-->
+<!--              <span class="expectMoneyVal counter">%</span>-->
+<!--            </span>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--              <span class="ContentText">평가금액</span>-->
+<!--              <span class="FlexArea">-->
+<!--              <span class="expectMoneyVal"> 1,930,752</span>-->
+<!--              <span class="expectMoneyVal counter">KRW</span>-->
+<!--            </span>-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--          </div>-->
+          <div id="chart"></div>
+        </card>
+        <card id="follower_info">
+          <span class="CardTitle">팔로워 정보</span>
+        </card>
+      </div>
     </grey-background>
+    <div class=" content-area">
+      <div class="trend-kind">
+        <span class="trend-kind-big">팔로우 트렌드</span>
+        <span class="trend-kind-small">수익률 TOP10</span>
+      </div>
+      <div class="flex-container trend-wrapper">
+        <trend-card
+                class="trend"
+                :key="trendData.id"
+                v-for="trendData in trendData"
+                :trendData="trendData"
+        ></trend-card>
+      </div>
+
+    </div>
   </div>
 </template>
 
@@ -30,11 +50,26 @@
 import NavBar from "./NavBar";
 import GreyBackground from "./GreyBackground";
 import Card from "./Card";
+import TrendCard from "./TrendCard";
+
 export default {
   name: "Home",
-  components: { Card, GreyBackground, NavBar },
-  props: {
-    msg: String
+  components: {
+    TrendCard,
+    "nav-bar": NavBar,
+    "grey-background": GreyBackground,
+    card: Card
+  },
+  data() {
+    return {
+      trendData: [
+        { id: 1, name: "minsoo" },
+        { id: 2, name: "mina" },
+        { id: 3, name: "minji" },
+        { id: 4, name: "junho" },
+        { id: 5, name: "taemin" }
+      ]
+    };
   }
 };
 </script>
@@ -44,65 +79,111 @@ export default {
 html {
   font-size: 10px;
 }
-#grey_bg {
-  position: static;
+
+.flex-container {
+  display: flex;
+  margin: auto;
+  padding: 2em 0;
 }
+
+.content-area{
+  width: 1200px;
+  justify-content: space-between;
+  margin: auto;
+}
+
 #basic_info {
-  float: left;
-  position: relative;
-  top: 2rem;
-  left: 10rem;
-  height: 15rem;
-  width: 50rem;
+  flex: 2.5;
+  width: 810px;
+  height: 15em;
+  margin-right: 1em;
+  margin-left: 50px;
+}
+
+#follower_info {
+  flex: 1.4;
+  width: 320px;
+  height: 15em;
+  margin-left: 1em;
+  margin-right: 50px;
+
 }
 
 .CardTitle {
-  color: rgba(77,79,92, 0.61);
+  color: rgba(77, 79, 92, 0.61);
   position: relative;
-  top: 1rem;
-  left: 1.5rem;
-  font-family: "Noto Sans KR";
-  font-size: 1.4rem;
+  top: 1em;
+  left: 1.5em;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 20px;
   font-weight: bold;
 }
 
 .CardContents {
-  color: #4D4F5C;
+  color: #4d4f5c;
   width: 25rem;
   position: relative;
   top: 4rem;
   left: 4rem;
-  font-size: 1.2rem;
+  font-size: 1.2em;
   font-weight: bold;
 }
 
-.ContentText { /*내 수익률*/
-  margin-right: 8rem;
+.ContentText {
+  /*내 수익률*/
+  width: 60%;
 }
 
-.RateVal { /*+24*/
+.RateVal {
+  /*+24*/
   color: red;
 }
 
-.FloatArea {
-  float: right;
+.FlexArea {
+  display: inline-flex;
+  width: 30%;
+  justify-content: flex-end;
 }
-.expectMoneyVal {/*% 및 123,456 KRW */
+.expectMoneyVal {
+  /*% 및 123,456 KRW */
   color: #333333;
 }
 .counter {
   margin-left: 0.5rem;
 }
-.row{
+.row {
+  display: flex;
   margin-bottom: 2rem;
 }
 
-#follower_info {
-  float: right;
-  position: relative;
-  top: 2rem;
-  right: 10rem;
-  width: 20rem;
-  height: 15rem;
+.trend {
+  width: 200px;
+  height: 200px;
+}
+
+.trend-wrapper {
+  /*margin-top: ;*/
+  padding: 0 50px;
+  justify-content: space-between;
+  /*margin: 0 50px 0;*/
+}
+
+.trend-kind{
+  margin: 35px 50px 20px 50px;
+}
+
+.trend-kind-big{
+  margin-right: 3px;
+  font-family: "Noto Sans KR", "Spoqa Han Sans", "Spoqa Han Sans JP", "Sans-serif";
+  font-size: 20px;
+  font-weight: bold;
+  color: rgba(77, 79, 92, 0.77);
+}
+
+.trend-kind-small{
+  font-family: "Noto Sans KR", "Spoqa Han Sans", "Spoqa Han Sans JP", "Sans-serif";
+  font-size: 15px;
+  font-weight: bold;
+  color: rgba(77, 79, 92, 0.34);
 }
 </style>

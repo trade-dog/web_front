@@ -13,7 +13,6 @@
 <style scoped>
 .GreyBackground {
     background-color: #F5F7FA;
-    height: 20em;
     width: 100%;
     left: 0;
     z-index: -1;
