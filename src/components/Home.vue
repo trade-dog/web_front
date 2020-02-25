@@ -5,26 +5,35 @@
       <div class="flex-container content-area">
         <card id="basic_info">
           <span class="CardTitle">기본정보</span>
-<!--          <div class="CardContents">-->
-<!--            <div class="row">-->
-<!--              <span class="ContentText">내 수익률</span>-->
-<!--              <span class="FlexArea">-->
-<!--              <span class="RateVal"> +24</span>-->
-<!--              <span class="expectMoneyVal counter">%</span>-->
-<!--            </span>-->
-<!--            </div>-->
-<!--            <div class="row">-->
-<!--              <span class="ContentText">평가금액</span>-->
-<!--              <span class="FlexArea">-->
-<!--              <span class="expectMoneyVal"> 1,930,752</span>-->
-<!--              <span class="expectMoneyVal counter">KRW</span>-->
-<!--            </span>-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--          </div>-->
+          <div class="CardContents">
+            <div class="row">
+              <span class="ContentText">내 수익률</span>
+              <span class="FlexArea">
+                <span class="RateVal"> +24</span>
+                <span class="expectMoneyVal counter">%</span>
+              </span>
+            </div>
+            <div class="row">
+              <span class="ContentText">평가금액</span>
+              <span class="FlexArea">
+                <span class="expectMoneyVal"> 1,930,752</span>
+                <span class="expectMoneyVal counter">KRW</span>
+              </span>
+            </div>
+          </div>
           <div id="chart"></div>
         </card>
         <card id="follower_info">
           <span class="CardTitle">팔로워 정보</span>
+          <div class="CardContents follower-content">
+            <div class="follower-row">
+              <span class="ContentText">내 팔로워 수</span>
+              <span class="FlexArea">
+                <span>1,930,752</span>
+                <span class="follower-count">명</span>
+              </span>
+            </div>
+          </div>
         </card>
       </div>
     </grey-background>
@@ -35,13 +44,12 @@
       </div>
       <div class="flex-container trend-wrapper">
         <trend-card
-                class="trend"
-                :key="trendData.id"
-                v-for="trendData in trendData"
-                :trendData="trendData"
+          class="trend"
+          :key="trendData.id"
+          v-for="trendData in trendData"
+          :trendData="trendData"
         ></trend-card>
       </div>
-
     </div>
   </div>
 </template>
@@ -86,7 +94,7 @@ html {
   padding: 2em 0;
 }
 
-.content-area{
+.content-area {
   width: 1200px;
   justify-content: space-between;
   margin: auto;
@@ -106,7 +114,6 @@ html {
   height: 15em;
   margin-left: 1em;
   margin-right: 50px;
-
 }
 
 .CardTitle {
@@ -129,9 +136,13 @@ html {
   font-weight: bold;
 }
 
+.follower-count {
+  padding-left: 4px;
+}
+
 .ContentText {
   /*내 수익률*/
-  width: 60%;
+  width: 50%;
 }
 
 .RateVal {
@@ -144,6 +155,7 @@ html {
   width: 30%;
   justify-content: flex-end;
 }
+
 .expectMoneyVal {
   /*% 및 123,456 KRW */
   color: #333333;
@@ -154,6 +166,22 @@ html {
 .row {
   display: flex;
   margin-bottom: 2rem;
+}
+
+.follower-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.follower-content {
+  left: 0rem;
+  font-size: 1.4rem;
+  width: 100%;
+  justify-content: space-around;
+  color: rgb(77, 79, 92);
+  vertical-align: baseline;
 }
 
 .trend {
@@ -168,20 +196,22 @@ html {
   /*margin: 0 50px 0;*/
 }
 
-.trend-kind{
+.trend-kind {
   margin: 35px 50px 20px 50px;
 }
 
-.trend-kind-big{
+.trend-kind-big {
   margin-right: 3px;
-  font-family: "Noto Sans KR", "Spoqa Han Sans", "Spoqa Han Sans JP", "Sans-serif";
+  font-family: "Noto Sans KR", "Spoqa Han Sans", "Spoqa Han Sans JP",
+    "Sans-serif";
   font-size: 20px;
   font-weight: bold;
   color: rgba(77, 79, 92, 0.77);
 }
 
-.trend-kind-small{
-  font-family: "Noto Sans KR", "Spoqa Han Sans", "Spoqa Han Sans JP", "Sans-serif";
+.trend-kind-small {
+  font-family: "Noto Sans KR", "Spoqa Han Sans", "Spoqa Han Sans JP",
+    "Sans-serif";
   font-size: 15px;
   font-weight: bold;
   color: rgba(77, 79, 92, 0.34);
