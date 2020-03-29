@@ -39,20 +39,13 @@
                 <div class="row">
                   <span class="ContentText">내 팔로워 수</span>
                   <span class="FlexArea">
-                <span class="RateVal"> 512</span>
-                <span class="expectMoneyVal counter">명</span>
-              </span>
-                </div>
-                <div class="row">
-                  <span class="ContentText">평가금액</span>
-                  <span class="FlexArea">
-                <span class="expectMoneyVal"> 1,930,752</span>
-                <span class="expectMoneyVal counter">KRW</span>
-              </span>
+                    <span class="RateVal"> 512</span>
+                    <span class="expectMoneyVal counter">명</span>
+                  </span>
                 </div>
               </div>
-              <div id="follower_chart">
-                <doughnut></doughnut>
+              <div>
+                <bar id="followerChart_container"></bar>
               </div>
             </div>
           </div>
@@ -83,12 +76,14 @@ import GreyBackground from "./GreyBackground";
 import Card from "./Card";
 import TrendCard from "./TrendCard";
 import doughnut from "./Doughnt";
+import bar from "./Bar"
 
 
 export default {
   name: "Home",
   components: {
     doughnut,
+    bar,
     TrendCard,
     "nav-bar": NavBar,
     "grey-background": GreyBackground,
@@ -184,7 +179,7 @@ html {
 
 .ContentText {
   /*내 수익률*/
-  width: 60%;
+  width: 40%;
 }
 
 .RateVal {
@@ -218,6 +213,7 @@ html {
 
 .follower-contents {
   display: flex;
+  flex-direction: column;
 }
 
 .trend {
@@ -254,5 +250,12 @@ html {
   #chartContainer {
     position: relative;
     max-width: 13rem;
+  }
+
+  #followerChart_container {
+    position: relative;
+    top: 4em;
+    width: 100%;
+    height: 5em;
   }
 </style>

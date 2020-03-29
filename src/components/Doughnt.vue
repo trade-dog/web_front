@@ -13,10 +13,10 @@
                             label: 'GitHub Commits',
                             data: [40, 20, 12, 39],
                             backgroundColor: [
-                                '#41B883',
-                                '#E46651',
-                                '#00D8FF',
-                                '#DD1B16'
+                                'rgba(163,160,251,1)',
+                                'rgba(255,218,131,1)',
+                                'rgba(255,131,115,1)',
+                                'rgba(85,216,254,1)'
                             ],
                         }
                     ]
@@ -25,7 +25,8 @@
                     legend: {
                         position: 'right',
                         labels: {
-                            boxWidth: 40
+                            boxWidth: 15,
+                            fontFamily: ["Noto Sans KR", "Spoqa Han Sans"]
                         }
                     }
                 }
