@@ -26,7 +26,7 @@
                         position: 'right',
                         labels: {
                             boxWidth: 15,
-                            fontFamily: ["Noto Sans KR", "Spoqa Han Sans"]
+                            fontFamily: "Spoqa Han Sans"
                         }
                     }
                 }
