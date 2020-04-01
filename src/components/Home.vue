@@ -64,6 +64,13 @@
         ></trend-card>
       </div>
     </div>
+    <grey-background>
+      <div class="content-area">
+        <foot>
+
+        </foot>
+      </div>
+    </grey-background>
   </div>
 </template>
 
@@ -74,6 +81,7 @@ import Card from "./Card";
 import TrendCard from "./TrendCard";
 import doughnut from "./Doughnt";
 import bar from "./Bar";
+import foot from "./foot";
 
 export default {
   name: "Home",
@@ -83,7 +91,8 @@ export default {
     TrendCard,
     "nav-bar": NavBar,
     "grey-background": GreyBackground,
-    card: Card
+    card: Card,
+    foot
   },
   methods: {},
 
@@ -144,6 +153,126 @@ export default {
           follower: "920,332",
           tags: ["집중형", "큰손", "단타"],
           earn_rate: 8.7,
+          asset_rate: {
+            EOS: 48,
+            XRP: 30,
+            ETH: 22
+          }
+        },
+        {
+          id: 6,
+          name: "taemin",
+          follower: "920,332",
+          tags: ["집중형", "큰손", "단타"],
+          earn_rate: 12.7,
+          asset_rate: {
+            EOS: 48,
+            XRP: 30,
+            ETH: 22
+          }
+        },
+        {
+          id: 7,
+          name: "taemin",
+          follower: "920,332",
+          tags: ["집중형", "큰손", "단타"],
+          earn_rate: 3.1,
+          asset_rate: {
+            EOS: 48,
+            XRP: 30,
+            ETH: 22
+          }
+        },
+        {
+          id: 8,
+          name: "taemin",
+          follower: "920,332",
+          tags: ["집중형", "큰손", "단타"],
+          earn_rate: 8.7,
+          asset_rate: {
+            EOS: 48,
+            XRP: 30,
+            ETH: 22
+          }
+        },
+        {
+          id: 9,
+          name: "ian",
+          follower: "920,332",
+          tags: ["집중형", "큰손", "단타"],
+          earn_rate: -1.1,
+          asset_rate: {
+            EOS: 48,
+            XRP: 30,
+            ETH: 22
+          }
+        },
+        {
+          id: 10,
+          name: "hodong",
+          follower: "920,332",
+          tags: ["집중형", "큰손", "단타"],
+          earn_rate: -2.6,
+          asset_rate: {
+            EOS: 48,
+            XRP: 30,
+            ETH: 22
+          }
+        },
+        {
+          id: 11,
+          name: "jaesuk",
+          follower: "920,332",
+          tags: ["집중형", "큰손", "단타"],
+          earn_rate: -2.6,
+          asset_rate: {
+            EOS: 48,
+            XRP: 30,
+            ETH: 22
+          }
+        },
+        {
+          id: 12,
+          name: "minsuk",
+          follower: "920,332",
+          tags: ["집중형", "큰손", "단타"],
+          earn_rate: -2.6,
+          asset_rate: {
+            EOS: 48,
+            XRP: 30,
+            ETH: 22
+          }
+        },
+        {
+          id: 13,
+          name: "hia",
+          follower: "920,332",
+          tags: ["집중형", "큰손", "단타"],
+          earn_rate: -2.6,
+          asset_rate: {
+            EOS: 48,
+            XRP: 30,
+            ETH: 22
+          }
+        },
+        {
+          id: 14,
+          name: "jimin",
+          follower: "920,332",
+          tags: ["집중형", "큰손", "단타"],
+          earn_rate: -2.6,
+          asset_rate: {
+            EOS: 48,
+            XRP: 30,
+            ETH: 22
+          }
+        },
+        {
+          id: 15,
+          name: "sorim",
+          follower: "920,332",
+          tags: ["집중형", "큰손", "단타"],
+          earn_rate: -2.6,
           asset_rate: {
             EOS: 48,
             XRP: 30,
@@ -262,13 +391,15 @@ html {
 
 .trend {
   width: 200px;
+  margin: 1em 0;
 }
 
 .trend-wrapper {
   /*margin-top: ;*/
   padding: 0 50px;
   justify-content: space-between;
-  /*margin: 0 50px 0;*/
+  margin: 1em 0;
+  flex-wrap: wrap;
 }
 
 .trend-kind {
