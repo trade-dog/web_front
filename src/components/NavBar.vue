@@ -1,16 +1,17 @@
 <template>
   <header>
     <div class="content-area">
-      <a href="#home">
+      <a href="#">
+        <router-link to="/">
         <img
           src="https://coinone.co.kr/common/assets/images/coinone_logo/coinone_logo_blue.svg"
           id="logo"
-        />
+        /></router-link>
       </a>
       <div class="items">
-        <a href="#info"><span class="nav_text">내 정보</span></a>
-        <a href="#search"><span class="nav_text">상세 검색</span></a>
-        <a href="#portfolio"><span class="nav_text">내 포트폴리오</span></a>
+        <a href="#"><span class="nav_text"><router-link to="/profile">내 정보</router-link></span></a>
+        <a href="#"><span class="nav_text"><router-link to="/search">상세 검색</router-link></span></a>
+        <a href="#"><span class="nav_text"><router-link to="/portfolio">내 포트폴리오</router-link></span></a>
       </div>
 
     </div>
