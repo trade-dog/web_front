@@ -1,12 +1,22 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition name="fade">
+      <router-view></router-view>
+    </transition>
+
   </div>
 </template>
 
 <script>
 export default {
   name: "app",
+  watch: {
+    '$route' (to, from) {
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      this.fade = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+    }
+  }
 };
 </script>
 
@@ -39,5 +49,12 @@ export default {
   a:hover {
     color: #0084d1
   }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .3s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+
 
 </style>
