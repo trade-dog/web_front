@@ -377,13 +377,6 @@ html {
   margin-bottom: 2rem;
 }
 
-.follower-row {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-  width: 100%;
-}
-
 .follower-contents {
   display: flex;
   flex-direction: column;
