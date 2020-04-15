@@ -17,7 +17,7 @@ export default {
   @import url(https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
   @import url(https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css);
   @import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap");
-  @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css");
+    @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css");
 
   #app {
     margin: 0;

@@ -5,7 +5,7 @@
             <div class="flex-container content-area">
                 <div class="search">
                     <i class="fa fa-search" id="search"></i>
-                    <input type="text" class="searchInput" placeholder="태그/암호화폐 검색">
+                    <input type="text" class="input-field" placeholder="태그/암호화폐 검색">
                     <span class="toggle">
                         <i class="fa fa-caret-down"></i>
                     </span>
@@ -255,7 +255,7 @@
         align-items: center;
     }
 
-    .searchInput {
+    .input-field {
         width: 100%;
         border: 3px none rgb(61,67,77);
         border-bottom-style: solid;
