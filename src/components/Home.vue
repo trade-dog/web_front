@@ -82,6 +82,7 @@ import TrendCard from "./TrendCard";
 import doughnut from "./Doughnt";
 import bar from "./Bar";
 import foot from "./foot";
+import api from "./api";
 
 export default {
   name: "Home",
@@ -94,7 +95,26 @@ export default {
     card: Card,
     foot
   },
-  methods: {},
+  methods: {
+    parseData() {
+      let data = api.basic_request("https://test.url");
+      let data2 = api.basic_request("https://test.url2")
+      let result = [];
+      for (let i; i < data.length; i++) {
+        let obj = {
+          id: i,
+          name: data[i].name,
+          follower: data[i].follower,
+          tags: data2[i].tags
+        }
+        result.push(obj)
+      }
+      this.trendData = result;
+    }
+  },
+  created() {
+
+  },
 
   data() {
     return {
