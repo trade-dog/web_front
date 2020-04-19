@@ -24,7 +24,7 @@
           </div>
           <div class="asset-rate-value-wrapper">
             <div class="asset-rate-value" :key="idx" v-for="(value, title, idx) in this.trendData.asset_rate">
-              <span><img class="coin-icon" src="assets/coins/icon-eth.png"> </span>
+              <span><img class="coin-icon" :src="'assets/coins/icon-' + title + '.png'"> </span>
               <span class="asset-rate-coin"> {{ title }} </span>
               <span class="asset-rate-value"> {{ value }} % </span>
             </div>
