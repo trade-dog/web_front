@@ -40,7 +40,7 @@
     import NavBar from "./NavBar";
     import GreyBackground from "./GreyBackground";
     import TrendCard from "./TrendCard";
-    import foot from "./foot";
+    import foot from "./footer";
     export default {
         name: "search",
         components: {GreyBackground, NavBar, TrendCard, foot},

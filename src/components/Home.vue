@@ -81,7 +81,7 @@ import Card from "./Card";
 import TrendCard from "./TrendCard";
 import doughnut from "./Doughnt";
 import bar from "./Bar";
-import foot from "./foot";
+import foot from "./footer";
 import api from "./api";
 
 export default {
