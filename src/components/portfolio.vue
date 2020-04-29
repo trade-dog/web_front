@@ -82,7 +82,18 @@
     <div class="table_area content-area">
       <vue-good-table :columns="columns" :rows="rows" />
     </div>
-    <div class="chart-area"></div>
+    <div class="chart-area">
+      <div class="content-area">
+        <candle-stick></candle-stick>
+      </div>
+    </div>
+    <grey-background>
+      <div class="content-area">
+        <foot>
+
+        </foot>
+      </div>
+    </grey-background>
   </div>
 </template>
 
@@ -94,16 +105,20 @@ import doughnut from "./Doughnt";
 import GreyBackground from "./GreyBackground";
 import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
+import CandleStick from "./CandleStick";
+import foot from "./footer";
 
 export default {
   name: "portfolio",
   components: {
+    CandleStick,
     GreyBackground,
     NavBar,
     Card,
     bar,
     doughnut,
-    VueGoodTable
+    VueGoodTable,
+    foot
   },
   data() {
     return {
@@ -320,4 +335,9 @@ export default {
   margin-top: 3em;
   margin-bottom: 3em;
 }
+  .chart-area {
+    height: 300px;
+    margin-bottom: 5em;
+  }
+
 </style>
