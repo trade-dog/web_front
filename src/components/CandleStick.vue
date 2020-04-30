@@ -8,6 +8,7 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
+
 export default {
   name: "CandleStick",
   components: {
@@ -284,15 +285,26 @@ export default {
       }
     };
   },
+  created() {
+    this.updateChart();
+  },
   methods: {
     updateChart() {
-      const newData = this.series[0].data.map(() => {
-        //insert here data
-        // return Math.floor(Math.random())
+
+      this.$axios.get("https://tb.coinone.co.kr/api/v1/chart/olhc/?site=coinoneeth&type=1d")
+      .then(res => {
+        console.log(`data: ${res.data}`);
       })
-      this.series = [{
-        data: newData
-      }]
+      .catch(err => {
+        console.log(err);
+      });
+      // const newData = this.series[0].data.map(() => {
+      //   //insert here data
+      //   // return Math.floor(Math.random())
+      // })
+      // this.series = [{
+      //   data: newData
+      // }]
     }
   }
 };
