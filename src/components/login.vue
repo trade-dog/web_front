@@ -43,6 +43,25 @@ export default {
   components: {
     Card,
     NavBar
+  },
+  methods: {
+    onSubmit(email, password) {
+      this.$store.dispatch('LOGIN', {email, password})
+      .then(() => this.redirect())
+      .catch(({message}) => this.msg = message)
+    },
+
+    redirect() {
+      const {search} = window.location
+      const {tokens} = search.replace(/^\?/, '').split('&') //토큰값의 종류에 따라서 변경필요
+      const {returnPath} = tokens.reduce((qs, tkn) => {
+        const pair = tkn.split('=')
+        qs[pair[0]] = decodeURIComponent(pair[1])
+        return qs
+      }, {})
+
+      this.$router.push(returnPath)
+    }
   }
 };
 </script>

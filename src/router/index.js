@@ -4,6 +4,7 @@ import Home from "@/components/Home";
 import portfolio from "@/components/portfolio";
 import Search from "../components/Search";
 import login from "../components/login";
+import ModUser from "../components/ModUser";
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
             path: '/login',
             name: 'login',
             component: login
+        },
+        {
+            path: '/user',
+            name: 'user',
+            component: ModUser
         }
     ]
 })

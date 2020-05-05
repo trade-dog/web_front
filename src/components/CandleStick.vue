@@ -290,8 +290,9 @@ export default {
   },
   methods: {
     updateChart() {
-
-      this.$axios.get("https://tb.coinone.co.kr/api/v1/chart/olhc/?site=coinoneeth&type=1d")
+//https://tb.coinone.co.kr/api/v1/chart/olh/?site=coinoneeth&type=1d
+      this.$axios.get("https://tb.coinone.co.kr/api/v1/chart/olh/?site=coinoneeth&type=1d")
+      // this.$axios.get("https://api.hybus.app/subway")
       .then(res => {
         console.log(`data: ${res.data}`);
       })

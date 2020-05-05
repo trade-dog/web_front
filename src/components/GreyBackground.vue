@@ -12,6 +12,7 @@
 
 <style scoped>
 .GreyBackground {
+    padding: 2em 0;
     background-color: #F5F7FA;
     width: 100%;
     left: 0;

@@ -12,6 +12,7 @@
         <a href="#"><span class="nav_text"><router-link to="/search">상세 검색</router-link></span></a>
         <a href="#"><span class="nav_text"><router-link to="/portfolio">내 포트폴리오</router-link></span></a>
         <a href="#"><span class="nav_text"><router-link to="/login">로그인</router-link></span></a>
+        <a href="#"><span class="nav_text"><router-link to="/user">정보수정(테스트)</router-link></span></a>
       </div>
 
     </div>
