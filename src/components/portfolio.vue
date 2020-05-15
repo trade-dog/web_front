@@ -24,14 +24,14 @@
                 <div class="row">
                   <span class="ContentText">내 수익률</span>
                   <span class="FlexArea">
-                    <span class="RateVal"> +24</span>
+                    <span class="RateVal"> {{summaryRate}} </span>
                     <span class="expectMoneyVal counter">%</span>
                   </span>
                 </div>
                 <div class="row">
                   <span class="ContentText">평가금액</span>
                   <span class="FlexArea">
-                    <span class="expectMoneyVal"> 1,930,752</span>
+                    <span class="expectMoneyVal"> {{balance}} </span>
                     <span class="expectMoneyVal counter">KRW</span>
                   </span>
                 </div>
@@ -50,7 +50,7 @@
                 <div class="row">
                   <span class="ContentText">내 팔로워 수</span>
                   <span class="FlexArea">
-                    <span class="RateVal"> 512</span>
+                    <span class="RateVal"> {{followerNum}} </span>
                     <span class="expectMoneyVal counter">명</span>
                   </span>
                 </div>
@@ -66,16 +66,7 @@
     <grey-background>
       <div class="flex-container content-area">
         <p class="personal_text">
-          새겨지는 이런 어머니 말 시인의 불러 봅니다. 하나에 이름을 패, 노루,
-          가난한 마리아 이런 까닭입니다. 것은 벌써 말 있습니다. 별을 한 오면
-          소녀들의 비둘기, 봅니다. 새겨지는 덮어 내일 말 가난한 북간도에
-          까닭입니다. 벌레는 하나에 이름과, 별 내 버리었습니다. 별에도 봄이
-          책상을 어머니, 강아지, 헤일 말 위에 계십니다. 프랑시스 애기 아무 이런
-          새워 보고, 하나에 봅니다. 새겨지는 계집애들의 이름을 계십니다. 나는
-          계절이 잔디가 하나의 거외다. 계집애들의 오면 덮어 까닭입니다. 별을
-          이름을 사랑과 나는 너무나 않은 봅니다. 이름을 묻힌 하나에 가난한 언덕
-          이웃 언덕 이 불러 있습니다. 그러나 별 별빛이 사랑과 슬퍼하는 이국 별
-          아직 경, 까닭입니다.
+          {{introduce}}
         </p>
       </div>
     </grey-background>
@@ -107,6 +98,8 @@ import "vue-good-table/dist/vue-good-table.css";
 import { VueGoodTable } from "vue-good-table";
 import CandleStick from "./CandleStick";
 import foot from "./footer";
+import api from "./api";
+const apiUrl = "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io";
 
 export default {
   name: "portfolio",
@@ -120,10 +113,65 @@ export default {
     VueGoodTable,
     foot
   },
+
+  methods:{
+    async getTag() {
+      const data = await api.BasicRequest(apiUrl+"/user");
+      const user_data = await api.parseResponse(data.data);
+      const user = user_data['data'];
+      this.tags = user['tag'];
+    },
+
+    async getFollowerNum() {
+      const data = await api.BasicRequest(apiUrl+"/user/1/follower/count");
+      const follower_data = await api.parseResponse(data.data);
+      this.followerNum = follower_data['data'];
+    },
+
+    async getUserBalance() {
+      const data = await api.BasicRequest(apiUrl+"/balance/evaluated");
+      const balance_data = await api.parseResponse(data.data);
+      this.balance = balance_data['data'];
+    },
+
+    async getSummaryRate() {
+      const data = await api.BasicRequest(apiUrl+"/statistic/summary");
+      const summary_data = await api.parseResponse(data.data);
+      const summary = summary_data['data'];
+      this.summaryRate = summary['returnRate'];
+      // need doughnut
+    },
+
+    async getIntroduce() {
+      const data = await api.BasicRequest(apiUrl+"/user/1/introduction");
+      const intro_data = await api.parseResponse(data.data);
+      this.introduce = intro_data['data'];
+    },
+
+    async getStatus() {
+      const data = await api.BasicRequest(apiUrl+"/statistic/status");
+      const status_data = await api.parseResponse(data.data);
+      const status_list = status_data['data'];
+      // need status table
+    }
+  },
+  created() {
+    this.getTag();
+    this.getUserBalance();
+    this.getSummaryRate();
+    this.getFollowerNum();
+    this.getIntroduce();
+  },
+
   data() {
     return {
+      balance:"",
+      summaryRate:"",
+      followerNum:"",
+      introduce:"",
+
       name: "코인투",
-      tags: ["슈퍼리치", "단타", "분산형"],
+      tags: "",//["슈퍼리치", "단타", "분산형"],
       columns: [
         {
           label: "코인명",
