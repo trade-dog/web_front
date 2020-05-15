@@ -18,7 +18,7 @@
                 <div class="row">
                   <span class="ContentText">평가금액</span>
                   <span class="FlexArea">
-                    <span class="expectMoneyVal"> 1,930,752</span>
+                    <span class="expectMoneyVal"> {{ userBalance }}</span>
                     <span class="expectMoneyVal counter">KRW</span>
                   </span>
                 </div>
@@ -66,9 +66,7 @@
     </div>
     <grey-background>
       <div class="content-area">
-        <foot>
-
-        </foot>
+        <foot> </foot>
       </div>
     </grey-background>
   </div>
@@ -96,28 +94,53 @@ export default {
     foot
   },
   methods: {
-    parseData() {
-      let data = api.basic_request("https://test.url");
-      let data2 = api.basic_request("https://test.url2")
-      let result = [];
-      for (let i; i < data.length; i++) {
-        let obj = {
-          id: i,
-          name: data[i].name,
-          follower: data[i].follower,
-          tags: data2[i].tags
-        }
-        result.push(obj)
+    async getUserInfo() {
+      const data = await api.BasicRequest("/user");
+      const user_data = await api.parseResponse(data.data);
+      this.userid = user_data['userId'];
+      this.nickname = user_data['nickname']
+      this.tag = user_data['tag']
+      this.followerCount = user_data['followerCount']
+        this.returnRate = user_data['returnRate']
+        this.ratio = user_data['ratio']
+    },
+
+    async getuserBalance() {
+      const data = await api.BasicRequest("https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/balance/evaluated");
+      const user_balance = await api.parseResponse(data.data);
+      this.userBalance = user_balance['data']
+      console.log(this.userBalance)
+    },
+
+      async getFollowerChart() {
+        const data = await api.BasicRequest(`/user/${this.userid}/follower/count/snapshot/1d`);
+        const FollowerChart = await api.parseResponse(data.data);
+        //
       }
-      this.trendData = result;
-    }
+
   },
   created() {
-
+      this.getuserBalance()
   },
 
   data() {
     return {
+      userData: {
+          userid: "",
+          nickname: "",
+          tag: [],
+          followerCount: "",
+          ratio: ""
+      },
+
+      userBalance: "",
+
+      flowerChart: {
+          start: "",
+          end: "",
+          items: [],
+      },
+
       trendData: [
         {
           id: 1,
