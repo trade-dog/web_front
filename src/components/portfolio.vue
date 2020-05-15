@@ -106,8 +106,8 @@
   import CandleStick from "./CandleStick";
   import foot from "./footer";
   import api from "./api";
-  const apiUrl = "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io";
-  //const apiUrl = "http://api.trd-dog.jadekim.kr/";
+  // const apiUrl = "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io";
+  const apiUrl = "http://api.trd-dog.jadekim.kr";
 
   export default {
     name: "portfolio",
@@ -175,7 +175,7 @@
 
       async getFollowerInfo() {
         const data = await api.BasicRequest(
-                "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/user/1/follower/count/snapshot/1d"
+                apiUrl + "/user/1/follower/count/snapshot/1d"
         );
         const chart_data = await api.parseResponse(data.data);
         // console.log(chart_data.data.items);
@@ -196,7 +196,7 @@
 
       async getAssetInfo() {
         const data = await api.BasicRequest(
-                "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/statistic/summary"
+                apiUrl + "/statistic/summary"
         );
         const asset_data = await api.parseResponse(data.data);
         console.log(asset_data.data.ratio);

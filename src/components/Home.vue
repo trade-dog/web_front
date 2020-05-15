@@ -91,6 +91,8 @@ import bar from "./Bar";
 import foot from "./footer";
 import api from "./api";
 
+const apiUrl = "http://api.trd-dog.jadekim.kr";
+
 export default {
   name: "Home",
   components: {
@@ -105,7 +107,7 @@ export default {
   methods: {
     async getUserInfo() {
       const data = await api.BasicRequest(
-        "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/user"
+        apiUrl + "/user"
       );
       const user_data = await api.parseResponse(data.data);
       console.log(user_data);
@@ -119,7 +121,7 @@ export default {
 
     async getuserBalance() {
       const data = await api.BasicRequest(
-        "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/balance/evaluated"
+        apiUrl + "/balance/evaluated"
       );
       const user_balance = await api.parseResponse(data.data);
       this.userBalance = user_balance["data"];
@@ -133,7 +135,7 @@ export default {
 
     async getFollowerInfo() {
       const data = await api.BasicRequest(
-        "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/user/1/follower/count/snapshot/1d"
+        apiUrl + "/user/1/follower/count/snapshot/1d"
       );
       const chart_data = await api.parseResponse(data.data);
       console.log(chart_data.data.items);
@@ -156,7 +158,7 @@ export default {
 
     async getAssetInfo() {
       const data = await api.BasicRequest(
-        "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/statistic/summary"
+        apiUrl + "/statistic/summary"
       );
       const asset_data = await api.parseResponse(data.data);
       console.log(asset_data.data.ratio);
