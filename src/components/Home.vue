@@ -24,7 +24,11 @@
                 </div>
               </div>
               <div id="chartContainer">
-                <doughnut></doughnut>
+                <doughnut
+                  v-if="this.followerChart.loaded"
+                  :chart-data="this.assetChart.chartdata"
+                  :options="this.assetChart.chartOptions"
+                ></doughnut>
               </div>
             </div>
           </div>
@@ -43,7 +47,12 @@
                 </div>
               </div>
               <div>
-                <bar id="followerChart_container"></bar>
+                <bar
+                  id="followerChart_container"
+                  v-if="this.followerChart.loaded"
+                  :chart-data="this.followerChart.chartdata"
+                  :options="this.followerChart.chartOptions"
+                ></bar>
               </div>
             </div>
           </div>
@@ -95,50 +104,148 @@ export default {
   },
   methods: {
     async getUserInfo() {
-      const data = await api.BasicRequest("/user");
+      const data = await api.BasicRequest(
+        "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/user"
+      );
       const user_data = await api.parseResponse(data.data);
-      this.userid = user_data['userId'];
-      this.nickname = user_data['nickname']
-      this.tag = user_data['tag']
-      this.followerCount = user_data['followerCount']
-        this.returnRate = user_data['returnRate']
-        this.ratio = user_data['ratio']
+      console.log(user_data);
+      this.userid = user_data["userId"];
+      this.nickname = user_data["nickname"];
+      this.tag = user_data["tag"];
+      this.followerCount = user_data["followerCount"];
+      this.returnRate = user_data["returnRate"];
+      this.ratio = user_data["ratio"];
     },
 
     async getuserBalance() {
-      const data = await api.BasicRequest("https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/balance/evaluated");
+      const data = await api.BasicRequest(
+        "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/balance/evaluated"
+      );
       const user_balance = await api.parseResponse(data.data);
-      this.userBalance = user_balance['data']
-      console.log(this.userBalance)
+      this.userBalance = user_balance["data"];
+      console.log(user_balance);
     },
 
-      async getFollowerChart() {
-        const data = await api.BasicRequest(`/user/${this.userid}/follower/count/snapshot/1d`);
-        const FollowerChart = await api.parseResponse(data.data);
-        //
-      }
+    milToDate(milsec) {
+      let date = new Date(milsec);
+      return date.toLocaleDateString("ko-kr");
+    },
 
+    async getFollowerInfo() {
+      const data = await api.BasicRequest(
+        "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/user/1/follower/count/snapshot/1d"
+      );
+      const chart_data = await api.parseResponse(data.data);
+      console.log(chart_data.data.items);
+      const y_axis = chart_data.data.items.map(v => v.value);
+      const x_axis = chart_data.data.items.map(v => this.milToDate(v.time));
+
+      let chartData = {
+        labels: x_axis,
+        datasets: [
+          {
+            data: y_axis,
+            backgroundColor: "rgba(88, 215, 255, 0.18)"
+          }
+        ]
+      };
+
+      this.followerChart.loaded = true;
+      this.followerChart.chartdata = chartData;
+    },
+
+    async getAssetInfo() {
+      const data = await api.BasicRequest(
+        "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/statistic/summary"
+      );
+      const asset_data = await api.parseResponse(data.data);
+      console.log(asset_data.data.ratio);
+
+      const coins = new Map(Object.entries(asset_data.data.ratio));
+      // console.log(coins.values())
+
+      let chartData = {
+        labels: Array.from(coins.keys()),
+        datasets: [
+          {
+            label: "Coins",
+            data: Array.from(coins.values()),
+            backgroundColor: [
+              "rgba(163,160,251,1)",
+              "rgba(255,218,131,1)",
+              "rgba(255,131,115,1)",
+              "rgba(85,216,254,1)"
+            ]
+          }
+        ]
+      };
+
+      this.assetChart.loaded = true;
+      this.assetChart.chartdata = chartData;
+    }
   },
-  created() {
-      this.getuserBalance()
+  mounted() {
+    this.getAssetInfo();
+    this.getuserBalance();
+    this.getUserInfo();
+    this.getFollowerInfo();
   },
 
   data() {
     return {
       userData: {
-          userid: "",
-          nickname: "",
-          tag: [],
-          followerCount: "",
-          ratio: ""
+        userid: "",
+        nickname: "",
+        tag: [],
+        followerCount: "",
+        ratio: ""
       },
 
       userBalance: "",
 
-      flowerChart: {
-          start: "",
-          end: "",
-          items: [],
+      followerChart: {
+        loaded: false,
+        chartdata: null,
+        chartOptions: {
+          legend: {
+            display: false
+          },
+          borderSkipped: ["bottom", "left"],
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [
+              {
+                display: false,
+                gridLines: {
+                  display: false
+                }
+              }
+            ],
+            yAxes: [
+              {
+                display: false,
+                gridLines: {
+                  display: false
+                }
+              }
+            ]
+          }
+        }
+      },
+
+      assetChart: {
+        loaded: false,
+        chartData: null,
+        chartOptions: {
+          legend: {
+            position: "right",
+            labels: {
+              boxWidth: 15,
+              fontFamily: "Spoqa Han Sans"
+            }
+          }
+        }
       },
 
       trendData: [

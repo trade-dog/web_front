@@ -37,7 +37,11 @@
                 </div>
               </div>
               <div id="chartContainer">
-                <doughnut></doughnut>
+                <doughnut
+                  v-if="this.followerChart.loaded"
+                  :chart-data="this.assetChart.chartdata"
+                  :options="this.assetChart.chartOptions"
+                ></doughnut>
               </div>
             </div>
           </div>
@@ -56,7 +60,12 @@
                 </div>
               </div>
               <div>
-                <bar id="followerChart_container"></bar>
+                <bar
+                  id="followerChart_container"
+                  v-if="this.followerChart.loaded"
+                  :chart-data="this.followerChart.chartdata"
+                  :options="this.followerChart.chartOptions"
+                ></bar>
               </div>
             </div>
           </div>
@@ -80,9 +89,7 @@
     </div>
     <grey-background>
       <div class="content-area">
-        <foot>
-
-        </foot>
+        <foot> </foot>
       </div>
     </grey-background>
   </div>
@@ -153,6 +160,65 @@ export default {
       const status_data = await api.parseResponse(data.data);
       const status_list = status_data['data'];
       // need status table
+    },
+    milToDate(milsec) {
+      let date = new Date(milsec);
+      return date.toLocaleDateString("ko-kr");
+    },
+
+    async getFollowerInfo() {
+      const data = await api.BasicRequest(
+        "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/user/1/follower/count/snapshot/1d"
+      );
+      const chart_data = await api.parseResponse(data.data);
+      // console.log(chart_data.data.items);
+      const y_axis = chart_data.data.items.map(v => v.value);
+      const x_axis = chart_data.data.items.map(v => this.milToDate(v.time));
+
+      let chartData = {
+        labels: x_axis,
+        datasets: [
+          {
+            data: y_axis,
+            backgroundColor: "rgba(88, 215, 255, 0.18)"
+          }
+        ]
+      };
+
+      this.followerChart.loaded = true;
+      this.followerChart.chartdata = chartData;
+    },
+
+    async getAssetInfo() {
+      const data = await api.BasicRequest(
+        "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io/statistic/summary"
+      );
+      const asset_data = await api.parseResponse(data.data);
+      console.log(asset_data.data.ratio);
+
+      const coins = new Map(Object.entries(asset_data.data.ratio));
+      // console.log(coins.values())
+
+
+      let chartData = {
+        labels: Array.from(coins.keys()),
+        datasets: [
+          {
+            label: "GitHub Commits",
+            data: Array.from(coins.values()),
+
+            backgroundColor: [
+              "rgba(163,160,251,1)",
+              "rgba(255,218,131,1)",
+              "rgba(255,131,115,1)",
+              "rgba(85,216,254,1)"
+            ]
+          }
+        ]
+      };
+
+      this.assetChart.loaded = true;
+      this.assetChart.chartdata = chartData;
     }
   },
   created() {
@@ -161,8 +227,8 @@ export default {
     this.getSummaryRate();
     this.getFollowerNum();
     this.getIntroduce();
+    this.getuserBalance();
   },
-
   data() {
     return {
       balance:"",
@@ -233,8 +299,55 @@ export default {
           recent_order: 1234,
           recent_ask: 4321
         }
-      ]
+      ],
+      followerChart: {
+        loaded: false,
+        chartdata: null,
+        chartOptions: {
+          legend: {
+            display: false
+          },
+          borderSkipped: ["bottom", "left"],
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [
+              {
+                display: false,
+                gridLines: {
+                  display: false
+                }
+              }
+            ],
+            yAxes: [
+              {
+                display: false,
+                gridLines: {
+                  display: false
+                }
+              }
+            ]
+          }
+        }
+      },
+      assetChart: {
+        loaded: false,
+        chartData: null,
+        chartOptions: {
+          legend: {
+            position: "right",
+            labels: {
+              boxWidth: 15,
+              fontFamily: "Spoqa Han Sans"
+            }
+          }
+        }
+      }
     };
+  },
+  mounted() {
+    this.getFollowerInfo();
+    this.getAssetInfo();
   }
 };
 </script>
@@ -383,9 +496,8 @@ export default {
   margin-top: 3em;
   margin-bottom: 3em;
 }
-  .chart-area {
-    height: 300px;
-    margin-bottom: 5em;
-  }
-
+.chart-area {
+  height: 300px;
+  margin-bottom: 5em;
+}
 </style>
