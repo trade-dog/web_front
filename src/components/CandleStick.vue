@@ -9,12 +9,20 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 import api from './api'
+const apiUrl = "http://api.trd-dog.jadekim.kr";
 
 export default {
   name: "CandleStick",
   components: {
     VueApexCharts
   },
+    props: {
+      target: {
+          type: String,
+          default: null,
+          required: true
+      },
+    },
   data() {
     return {
       options: {
@@ -287,20 +295,38 @@ export default {
     };
   },
   created() {
-    this.updateChart();
+
   },
+    watch: {
+      target() {
+          this.updateChart()
+      }
+    },
   methods: {
-    async updateChart() {
-        const data = await api.BasicRequest('')
-        console.log(api.parseResponse(data.data))
-      // const newData = thseries[0].data.map(() => {
-      //   //insert here data
-      //   // return Math.floor(Math.random())
-      // })
-      // this.series = [{
-      //   data: newData
-      // }]
-    }
+      getDate(){
+          const date = new Date();
+          const now = Date.now()
+          const month_ago = date.setMonth(date.getMonth() - 1);
+          return [now, month_ago]
+      },
+      async updateChart() {
+          const date = this.getDate()
+          const data = await api.BasicRequest(apiUrl + `/chart/candle/${this.target}?startDate=${date[0]}&endDate=${date[1]}`);
+          const candle_Data = await api.parseResponse(data.data);
+          // console.log(candle_Data.data.items)
+          let chart_data = []
+          for(let i of candle_Data.data.items){
+              let tmp = {
+                  x: new Date(i['time']),
+                  y: [i['open'], i['high'], i['low'], i['close']]
+              }
+              chart_data.push(tmp)
+          }
+
+          this.series = [{
+              data: chart_data
+          }]
+      },
   }
 };
 </script>

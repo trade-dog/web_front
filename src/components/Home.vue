@@ -11,7 +11,7 @@
                 <div class="row">
                   <span class="ContentText">내 수익률</span>
                   <span class="FlexArea">
-                    <span class="RateVal"> +24</span>
+                    <span class="RateVal"> {{ summaryRate }} </span>
                     <span class="expectMoneyVal counter">%</span>
                   </span>
                 </div>
@@ -41,7 +41,7 @@
                 <div class="row">
                   <span class="ContentText">내 팔로워 수</span>
                   <span class="FlexArea">
-                    <span class="RateVal"> 512</span>
+                    <span class="RateVal"> {{ followerNum }} </span>
                     <span class="expectMoneyVal counter">명</span>
                   </span>
                 </div>
@@ -106,9 +106,7 @@ export default {
   },
   methods: {
     async getUserInfo() {
-      const data = await api.BasicRequest(
-        apiUrl + "/user"
-      );
+      const data = await api.BasicRequest(apiUrl + "/user");
       const user_data = await api.parseResponse(data.data);
       console.log(user_data);
       this.userid = user_data["userId"];
@@ -120,9 +118,7 @@ export default {
     },
 
     async getuserBalance() {
-      const data = await api.BasicRequest(
-        apiUrl + "/balance/evaluated"
-      );
+      const data = await api.BasicRequest(apiUrl + "/balance/evaluated");
       const user_balance = await api.parseResponse(data.data);
       this.userBalance = user_balance["data"];
       console.log(user_balance);
@@ -131,6 +127,12 @@ export default {
     milToDate(milsec) {
       let date = new Date(milsec);
       return date.toLocaleDateString("ko-kr");
+    },
+
+    async getFollowerNum() {
+      const data = await api.BasicRequest(apiUrl + "/user/1/follower/count");
+      const follower_data = await api.parseResponse(data.data);
+      this.followerNum = follower_data["data"];
     },
 
     async getFollowerInfo() {
@@ -157,9 +159,7 @@ export default {
     },
 
     async getAssetInfo() {
-      const data = await api.BasicRequest(
-        apiUrl + "/statistic/summary"
-      );
+      const data = await api.BasicRequest(apiUrl + "/statistic/summary");
       const asset_data = await api.parseResponse(data.data);
       console.log(asset_data.data.ratio);
 
@@ -184,6 +184,12 @@ export default {
 
       this.assetChart.loaded = true;
       this.assetChart.chartdata = chartData;
+    },
+    async getSummaryRate() {
+      const data = await api.BasicRequest(apiUrl + "/statistic/1/summary");
+      const summary_data = await api.parseResponse(data.data);
+      const summary = summary_data["data"];
+      this.summaryRate = summary["returnRate"];
     }
   },
   mounted() {
@@ -191,6 +197,8 @@ export default {
     this.getuserBalance();
     this.getUserInfo();
     this.getFollowerInfo();
+    this.getSummaryRate();
+    this.getFollowerNum();
   },
 
   data() {
@@ -204,6 +212,7 @@ export default {
       },
 
       userBalance: "",
+      summaryRate: "",
 
       followerChart: {
         loaded: false,
