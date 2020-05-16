@@ -91,7 +91,8 @@ import bar from "./Bar";
 import foot from "./footer";
 import api from "./api";
 
-const apiUrl = "http://api.trd-dog.jadekim.kr";
+//const apiUrl = "http://api.trd-dog.jadekim.kr";
+const apiUrl = "https://db8bfc1f-f0ec-415c-8562-c5ecc9ec2dd7.mock.pstmn.io";
 
 export default {
   name: "Home",
@@ -197,11 +198,37 @@ export default {
       const summary_data = await api.parseResponse(data.data);
       const summary = summary_data["data"];
       this.summaryRate = summary["returnRate"];
+    },
+
+    async getTrendData() {
+      const data = await api.BasicRequest(apiUrl + "/trend/return-rate");
+      const trend_data = await api.parseResponse(data.data);
+      const trend = trend_data['data'];
+      const trendlist = trend['items'];
+      const trendrow = [];
+
+      trendlist.forEach(function(item,index){
+        const trend_content = {};
+        trend_content.id = index;
+        trend_content.name = item.nickname;
+        trend_content.follower = item.followerCount;
+        trend_content.tags = item.tag;
+        trend_content.earn_rate = item.returnRate;
+        trend_content.asset_rate = item.ratio;
+        trendrow.push(trend_content);
+      });
+      console.log(trendrow);
+      this.trendData = trendrow;
     }
   },
   mounted() {
     this.getAssetInfo();
     this.getFollowerInfo();
+    // this.getAssetInfo();
+    // this.getuserBalance();
+    // this.getUserInfo();
+    // this.getFollowerInfo();
+    this.getTrendData();
   },
 
   created() {
@@ -262,188 +289,189 @@ export default {
         }
       },
 
-      trendData: [
-        {
-          id: 1,
-          name: "minsoo",
-          follower: "1,920,237",
-          tags: ["분산형", "개미", "단타"],
-          earn_rate: -12.7,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 2,
-          name: "mina",
-          follower: "1,234,543",
-          tags: ["분산형", "단타"],
-          earn_rate: 2.2,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 3,
-          name: "minji",
-          follower: "1,167,224",
-          tags: ["집중형", "큰손", "장타"],
-          earn_rate: 1.3,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 4,
-          name: "junho",
-          follower: "3,442,985",
-          tags: ["집중형", "개미", "장타"],
-          earn_rate: -2.7,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 5,
-          name: "taemin",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: 8.7,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 6,
-          name: "taemin",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: 12.7,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 7,
-          name: "taemin",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: 3.1,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 8,
-          name: "taemin",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: 8.7,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 9,
-          name: "ian",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: -1.1,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 10,
-          name: "hodong",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: -2.6,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 11,
-          name: "jaesuk",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: -2.6,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 12,
-          name: "minsuk",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: -2.6,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 13,
-          name: "hia",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: -2.6,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 14,
-          name: "jimin",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: -2.6,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        },
-        {
-          id: 15,
-          name: "sorim",
-          follower: "920,332",
-          tags: ["집중형", "큰손", "단타"],
-          earn_rate: -2.6,
-          asset_rate: {
-            EOS: 48,
-            XRP: 30,
-            ETH: 22
-          }
-        }
-      ]
+      trendData: ""
+      // trendData: [
+      //   {
+      //     id: 1,
+      //     name: "minsoo",
+      //     follower: "1,920,237",
+      //     tags: ["분산형", "개미", "단타"],
+      //     earn_rate: -12.7,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 2,
+      //     name: "mina",
+      //     follower: "1,234,543",
+      //     tags: ["분산형", "단타"],
+      //     earn_rate: 2.2,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 3,
+      //     name: "minji",
+      //     follower: "1,167,224",
+      //     tags: ["집중형", "큰손", "장타"],
+      //     earn_rate: 1.3,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 4,
+      //     name: "junho",
+      //     follower: "3,442,985",
+      //     tags: ["집중형", "개미", "장타"],
+      //     earn_rate: -2.7,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 5,
+      //     name: "taemin",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: 8.7,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 6,
+      //     name: "taemin",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: 12.7,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 7,
+      //     name: "taemin",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: 3.1,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 8,
+      //     name: "taemin",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: 8.7,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 9,
+      //     name: "ian",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: -1.1,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 10,
+      //     name: "hodong",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: -2.6,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 11,
+      //     name: "jaesuk",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: -2.6,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 12,
+      //     name: "minsuk",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: -2.6,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 13,
+      //     name: "hia",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: -2.6,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 14,
+      //     name: "jimin",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: -2.6,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   },
+      //   {
+      //     id: 15,
+      //     name: "sorim",
+      //     follower: "920,332",
+      //     tags: ["집중형", "큰손", "단타"],
+      //     earn_rate: -2.6,
+      //     asset_rate: {
+      //       EOS: 48,
+      //       XRP: 30,
+      //       ETH: 22
+      //     }
+      //   }
+      // ]
     };
   }
 };

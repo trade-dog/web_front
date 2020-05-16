@@ -141,6 +141,7 @@ export default {
       const user_data = await api.parseResponse(data.data);
       const user = user_data["data"];
       this.tags = user["tag"];
+
     },
 
     async getFollowerNum() {
@@ -155,31 +156,6 @@ export default {
       this.balance = balance_data["data"];
     },
 
-    async getSummaryRate() {
-      const data = await api.BasicRequest(apiUrl + "/statistic/1/summary");
-      const summary_data = await api.parseResponse(data.data);
-      const summary = summary_data["data"];
-      this.summaryRate = summary["returnRate"];
-      // need doughnut
-    },
-
-    async getIntroduce() {
-      const data = await api.BasicRequest(apiUrl + "/user/1/introduction");
-      const intro_data = await api.parseResponse(data.data);
-      this.introduce = intro_data["data"];
-    },
-
-    async getStatus() {
-      const data = await api.BasicRequest(apiUrl + "/statistic/1/state");
-      const state_data = await api.parseResponse(data.data);
-      const state_list = state_data["data"];
-      // need status table
-      //
-      // state_list.forEach(function(item,index) {
-      //   console.log(item,index);
-      // });
-    },
-
     milToDate(milsec) {
       let date = new Date(milsec);
       return date.toLocaleDateString("ko-kr");
@@ -190,6 +166,42 @@ export default {
       const month_ago = date.setMonth(date.getMonth() - 1);
       return [now, month_ago];
     },
+      async getSummaryRate() {
+        const data = await api.BasicRequest(apiUrl + "/statistic/{userId}/summary");
+        const summary_data = await api.parseResponse(data.data);
+        const summary = summary_data['data'];
+        this.summaryRate = summary['returnRate'];
+        // need doughnut
+      },
+
+      async getIntroduce() {
+        const data = await api.BasicRequest(apiUrl + "/user/{userId}/introduction");
+        const intro_data = await api.parseResponse(data.data);
+        this.introduce = intro_data['data'];
+      },
+
+      async getStatus() {
+        const data = await api.BasicRequest(apiUrl + "/statistic/1/state");
+        const state_data = await api.parseResponse(data.data);
+        const state_list = state_data['data'];
+        const rows = [];
+
+        state_list.forEach(function(item,index) {
+          console.log(item,index);
+          const content = {};
+          content.id = index;
+          content.coin_name = item.currency;
+          content.asset_ratio = item.returnRate;
+          content.earn_ratio = item.ratio;
+          content.active_order = item.minAskPrice;
+          content.active_ask = item.maxAskPrice;
+          content.recent_order = item.minBidPrice;
+          content.recent_ask = item.maxBidPrice;
+          rows.push(content);
+        });
+
+        this.rows = rows;
+      },
 
     async getFollowerInfo() {
       const date = this.getDate();
@@ -214,39 +226,53 @@ export default {
       this.followerChart.chartdata = chartData;
     },
 
-    async getAssetInfo() {
-      const data = await api.BasicRequest(apiUrl + "/statistic/1/summary");
-      const asset_data = await api.parseResponse(data.data);
-      console.log(asset_data.data.ratio);
-      const coins = new Map(Object.entries(asset_data.data.ratio));
-      // console.log(coins.values())
+      async getFollowerInfo() {
+        const data = await api.BasicRequest(
+                apiUrl + "/user/{userId}/follower/count/snapshot/1d"
+        );
+        const chart_data = await api.parseResponse(data.data);
+        // console.log(chart_data.data.items);
+        const y_axis = chart_data.data.items.map(v => v.value);
+        const x_axis = chart_data.data.items.map(v => this.milToDate(v.time));
+        let chartData = {
+          labels: x_axis,
+          datasets: [
+            {
+              data: y_axis,
+              backgroundColor: "rgba(88, 215, 255, 0.18)"
+            }
+          ]
+        };
+        this.followerChart.loaded = true;
+        this.followerChart.chartdata = chartData;
+      },
 
-      console.log(Array.from(coins.values()));
-      let chartData = {
-        labels: Array.from(coins.keys()),
-        datasets: [
-          {
-            label: "GitHub Commits",
-            data: Array.from(coins.values()),
-            backgroundColor: [
-              "rgba(163,160,251,1)",
-              "rgba(255,218,131,1)",
-              "rgba(255,131,115,1)",
-              "rgba(85,216,254,1)"
-            ]
-          }
-        ]
-      };
-
-      //candleStick 차트 옵션 Select 값을 만들어 주는 부분
-      for (let i of Array.from(coins.keys())) {
-        // console.log("this is : " + i)
-        this.options.push({ text: i, value: i + "-KRW" });
-      }
-      this.selected = Array.from(coins.keys())[0] + "-KRW";
-
-      this.assetChart.loaded = true;
-      this.assetChart.chartdata = chartData;
+      async getAssetInfo() {
+        const data = await api.BasicRequest(
+                apiUrl + "/statistic/{userId}/summary"
+        );
+        const asset_data = await api.parseResponse(data.data);
+        console.log(asset_data.data.ratio);
+        const coins = new Map(Object.entries(asset_data.data.ratio));
+        // console.log(coins.values())
+        let chartData = {
+          labels: Array.from(coins.keys()),
+          datasets: [
+            {
+              label: "GitHub Commits",
+              data: Array.from(coins.values()),
+              backgroundColor: [
+                "rgba(163,160,251,1)",
+                "rgba(255,218,131,1)",
+                "rgba(255,131,115,1)",
+                "rgba(85,216,254,1)"
+              ]
+            }
+          ]
+        };
+        this.assetChart.loaded = true;
+        this.assetChart.chartdata = chartData;
+      },
     },
 
       follow_click(){
@@ -260,16 +286,17 @@ export default {
               this.followerNum -= 1
               this.follow_text = "팔로우"
           }
-      }
-  },
+      },
+
 
   created() {
-    this.getTag();
-    this.getUserBalance();
-    this.getSummaryRate();
-    this.getFollowerNum();
-    this.getIntroduce();
-  },
+      this.getTag();
+      this.getUserBalance();
+      this.getSummaryRate();
+      this.getFollowerNum();
+      this.getIntroduce();
+      this.getStatus();
+    },
 
   data() {
     return {
@@ -313,38 +340,7 @@ export default {
       ],
 
       rows: "",
-      // rows: [
-      //   {
-      //     id: 1,
-      //     coin_name: "John",
-      //     asset_ratio: 20,
-      //     earn_ratio: 1.246,
-      //     active_order: 0.03343,
-      //     active_ask: 1234,
-      //     recent_order: 1234,
-      //     recent_ask: 4321
-      //   },
-      //   {
-      //     id: 2,
-      //     coin_name: "Jane",
-      //     asset_ratio: 24,
-      //     earn_ratio: 1234,
-      //     active_order: 0.03343,
-      //     active_ask: 1234,
-      //     recent_order: 1234,
-      //     recent_ask: 4321
-      //   },
-      //   {
-      //     id: 3,
-      //     coin_name: "Susan",
-      //     asset_ratio: 16,
-      //     earn_ratio: 1345,
-      //     active_order: 0.03343,
-      //     active_ask: 1234,
-      //     recent_order: 1234,
-      //     recent_ask: 4321
-      //   }
-      // ]
+
       followerChart: {
         loaded: false,
         chartdata: null,
