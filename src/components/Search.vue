@@ -5,9 +5,16 @@
             <div class="flex-container content-area">
                 <div class="search">
                     <i class="fa fa-search" id="search"></i>
-                    <input type="text" class="input-field" placeholder="태그/암호화폐 검색">
+                    <div class="search-all">
+                        <input type="text" class="input-field" placeholder="태그/암호화폐 검색" v-on:keydown="getSearch" v-model="sentence">
+
+                        <div class="search-box" id="search-box" v-for="result in searchList" v-bind:key="result">
+                            <div class="search-result" v-on:click="getAutoComplete(result)">{{result}}</div>
+                        </div>
+                    </div>
                     <span class="toggle">
                         <i class="fa fa-caret-down"></i>
+
                     </span>
                 </div>
             </div>
@@ -41,193 +48,83 @@
     import GreyBackground from "./GreyBackground";
     import TrendCard from "./TrendCard";
     import foot from "./footer";
+    import api from "./api";
+
+    //const apiUrl = "http://api.trd-dog.jadekim.kr";
+    const apiUrl = "https://db8bfc1f-f0ec-415c-8562-c5ecc9ec2dd7.mock.pstmn.io";
+
     export default {
         name: "search",
         components: {GreyBackground, NavBar, TrendCard, foot},
+
+        methods: {
+            async getTagList() {
+                const data = await api.BasicRequest(apiUrl + "/trend/return-rate");
+                const trend_data = await api.parseResponse(data.data);
+                const trend = trend_data['data'];
+                const trendlist = trend['items'];
+
+                var trendrow = [];
+                trendlist.forEach(function(item,index) {
+                    trendrow = trendrow.concat(item.tag);
+                });
+                const tag_l = new Set(trendrow);
+                const taglist = Array.from(tag_l);
+                this.tagList = taglist;
+            },
+
+            // seperation: function(it){
+            //     return it.includes(this.sentence);
+            // },
+            getSearch() {
+                const taglist = this.tagList;
+                const searchlist = taglist.filter(it => it.includes(this.sentence));
+                this.searchList = searchlist;
+
+                console.log(this.searchList);
+            },
+
+            async getAutoComplete(sentence) {
+                const data = await api.BasicRequest(apiUrl + "/trend/return-rate");
+                const trend_data = await api.parseResponse(data.data);
+                const trend = trend_data['data'];
+                const trendlist = trend['items'];
+
+                const trendrow = [];
+                trendlist.forEach(function(item,index) {
+                    const trendTagList = item.tag.filter(it => it.includes(sentence));
+                    if(JSON.stringify(trendTagList)!=JSON.stringify([])){
+                        const trend_content = {};
+                        trend_content.id = index;
+                        trend_content.name = item.nickname;
+                        trend_content.follower = item.followerCount;
+                        trend_content.tags = item.tag;
+                        trend_content.earn_rate = item.returnRate;
+                        trend_content.asset_rate = item.ratio;
+                        trendrow.push(trend_content);
+                    }
+                });
+
+                this.trendData = trendrow;
+            },
+
+            async update() {
+                await this.getTagList();
+                await this.getSearch(this.sentence);
+                await this.getAutoComplete(this.sentence);
+            }
+        },
+
+        mounted() {
+            this.update();
+        },
+
         data() {
             return {
-                trendData: [
-                    {
-                        id: 1,
-                        name: "minsoo",
-                        follower: "1,920,237",
-                        tags: ["분산형", "개미", "단타"],
-                        earn_rate: -12.7,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 2,
-                        name: "mina",
-                        follower: "1,234,543",
-                        tags: ["분산형", "단타"],
-                        earn_rate: 2.2,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 3,
-                        name: "minji",
-                        follower: "1,167,224",
-                        tags: ["집중형", "큰손", "장타"],
-                        earn_rate: 1.3,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 4,
-                        name: "junho",
-                        follower: "3,442,985",
-                        tags: ["집중형", "개미", "장타"],
-                        earn_rate: -2.7,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 5,
-                        name: "taemin",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: 8.7,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 6,
-                        name: "taemin",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: 12.7,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 7,
-                        name: "taemin",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: 3.1,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 8,
-                        name: "taemin",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: 8.7,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 9,
-                        name: "ian",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: -1.1,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 10,
-                        name: "hodong",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: -2.6,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 11,
-                        name: "jaesuk",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: -2.6,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 12,
-                        name: "minsuk",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: -2.6,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 13,
-                        name: "hia",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: -2.6,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 14,
-                        name: "jimin",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: -2.6,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    },
-                    {
-                        id: 15,
-                        name: "sorim",
-                        follower: "920,332",
-                        tags: ["집중형", "큰손", "단타"],
-                        earn_rate: -2.6,
-                        asset_rate: {
-                            EOS: 48,
-                            XRP: 30,
-                            ETH: 22
-                        }
-                    }
-                ]
+                tagList: "",
+                searchList: "",
+                trendData: "",
+                sentence: ""
             };
         }
     }
@@ -253,6 +150,45 @@
         margin: auto;
         height: 10em;
         align-items: center;
+    }
+
+    .search-all {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-box {
+        position: relative;
+        display: inline-block;
+        border: 1px solid rgb(61,67,77);
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #search-box div{
+        padding: 12px;
+        text-decoration: none;
+        color: black;
+        display: block
+    }
+
+    #search-box div:hover {
+        background-color: #eee;
+    }
+
+    .search-result {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        padding: 12px 16px;
+        z-index: 1;
+    }
+
+    .search-box:hover .search-result {
+        display: block;
     }
 
     .input-field {
