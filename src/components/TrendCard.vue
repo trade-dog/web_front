@@ -15,7 +15,7 @@
         <div class="earn-rate">
           <p class="content-text-title">수익률</p>
           <p class="earn_rate_value"
-             :style="this.trendData.earn_rate > 0 ? {'color': 'rgb(0,89,255)'} : {'color': 'rgb(255,13,0)'}">{{ this.trendData.earn_rate}}%</p>
+             :style="this.trendData.earn_rate > 0 ? {'color': 'rgb(0,89,255)'} : {'color': 'rgb(255,13,0)'}">{{ this.trendData.earn_rate.toFixed(4)}}%</p>
         </div>
         <hr>
         <div class="asset-rate">
@@ -26,7 +26,7 @@
             <div class="asset-rate-value" :key="idx" v-for="(value, title, idx) in this.trendData.asset_rate">
               <span><img class="coin-icon" :src="'assets/coins/icon-' + title + '.png'"> </span>
               <span class="asset-rate-coin"> {{ title }} </span>
-              <span class="asset-rate-value"> {{ value }} % </span>
+              <span class="asset-rate-value"> {{ value.toFixed(2) }} % </span>
             </div>
           </div>
 
@@ -127,6 +127,6 @@ export default {
   }
 
   .asset-rate-value-wrapper {
-    width: 50%;
+    width: 60%;
   }
 </style>

@@ -11,7 +11,7 @@
                 <div class="row">
                   <span class="ContentText">수익률</span>
                   <span class="FlexArea">
-                    <span class="RateVal"> {{ summaryRate }} </span>
+                    <span class="RateVal"> {{ Math.round(summaryRate/10000) }} </span>
                     <span class="expectMoneyVal counter">%</span>
                   </span>
                 </div>
@@ -91,8 +91,8 @@ import bar from "./Bar";
 import foot from "./footer";
 import api from "./api";
 
-//const apiUrl = "http://api.trd-dog.jadekim.kr";
-const apiUrl = "https://db8bfc1f-f0ec-415c-8562-c5ecc9ec2dd7.mock.pstmn.io";
+const apiUrl = "http://api.trd-dog.jadekim.kr";
+// const apiUrl = "https://db8bfc1f-f0ec-415c-8562-c5ecc9ec2dd7.mock.pstmn.io";
 
 export default {
   name: "Home",
