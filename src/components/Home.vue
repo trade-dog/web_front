@@ -9,7 +9,7 @@
             <div class="basic_contents">
               <div class="CardContents">
                 <div class="row">
-                  <span class="ContentText">내 수익률</span>
+                  <span class="ContentText">수익률</span>
                   <span class="FlexArea">
                     <span class="RateVal"> {{ summaryRate }} </span>
                     <span class="expectMoneyVal counter">%</span>
@@ -18,14 +18,14 @@
                 <div class="row">
                   <span class="ContentText">평가금액</span>
                   <span class="FlexArea">
-                    <span class="expectMoneyVal"> {{ userBalance }}</span>
+                    <span class="expectMoneyVal"> {{ userBalance }} </span>
                     <span class="expectMoneyVal counter">KRW</span>
                   </span>
                 </div>
               </div>
               <div id="chartContainer">
                 <doughnut
-                  v-if="this.followerChart.loaded"
+                  v-if="this.assetChart.loaded"
                   :chart-data="this.assetChart.chartdata"
                   :options="this.assetChart.chartOptions"
                 ></doughnut>
@@ -105,28 +105,34 @@ export default {
     foot
   },
   methods: {
-    async getUserInfo() {
-      const data = await api.BasicRequest(apiUrl + "/user");
-      const user_data = await api.parseResponse(data.data);
-      console.log(user_data);
-      this.userid = user_data["userId"];
-      this.nickname = user_data["nickname"];
-      this.tag = user_data["tag"];
-      this.followerCount = user_data["followerCount"];
-      this.returnRate = user_data["returnRate"];
-      this.ratio = user_data["ratio"];
+    milToDate(milsec) {
+      let date = new Date(milsec);
+      return date.toLocaleDateString("ko-kr");
     },
+    getDate() {
+      const date = new Date();
+      const now = Date.now();
+      const month_ago = date.setMonth(date.getMonth() - 1);
+      return [now, month_ago];
+    },
+
+    // async getUserInfo() {
+    //   const data = await api.BasicRequest(apiUrl + "/user");
+    //   const user_data = await api.parseResponse(data.data);
+    //   console.log(user_data);
+    //   this.userid = user_data["userId"];
+    //   this.nickname = user_data["nickname"];
+    //   this.tag = user_data["tag"];
+    //   this.followerCount = user_data["followerCount"];
+    //   this.returnRate = user_data["returnRate"];
+    //   this.ratio = user_data["ratio"];
+    // },
 
     async getuserBalance() {
       const data = await api.BasicRequest(apiUrl + "/balance/evaluated");
       const user_balance = await api.parseResponse(data.data);
       this.userBalance = user_balance["data"];
       console.log(user_balance);
-    },
-
-    milToDate(milsec) {
-      let date = new Date(milsec);
-      return date.toLocaleDateString("ko-kr");
     },
 
     async getFollowerNum() {
@@ -136,14 +142,15 @@ export default {
     },
 
     async getFollowerInfo() {
+      const date = this.getDate();
       const data = await api.BasicRequest(
-        apiUrl + "/user/1/follower/count/snapshot/1d"
+        apiUrl +
+          `/user/1/follower/count/snapshot/1d?startDate=${date[0]}&endDate=${date[1]}`
       );
       const chart_data = await api.parseResponse(data.data);
-      console.log(chart_data.data.items);
+      // console.log(chart_data.data.items);
       const y_axis = chart_data.data.items.map(v => v.value);
       const x_axis = chart_data.data.items.map(v => this.milToDate(v.time));
-
       let chartData = {
         labels: x_axis,
         datasets: [
@@ -153,24 +160,23 @@ export default {
           }
         ]
       };
-
       this.followerChart.loaded = true;
       this.followerChart.chartdata = chartData;
     },
 
     async getAssetInfo() {
-      const data = await api.BasicRequest(apiUrl + "/statistic/summary");
+      const data = await api.BasicRequest(apiUrl + "/statistic/1/summary");
       const asset_data = await api.parseResponse(data.data);
       console.log(asset_data.data.ratio);
-
       const coins = new Map(Object.entries(asset_data.data.ratio));
       // console.log(coins.values())
 
+      console.log(Array.from(coins.values()));
       let chartData = {
         labels: Array.from(coins.keys()),
         datasets: [
           {
-            label: "Coins",
+            label: "Assets",
             data: Array.from(coins.values()),
             backgroundColor: [
               "rgba(163,160,251,1)",
@@ -185,6 +191,7 @@ export default {
       this.assetChart.loaded = true;
       this.assetChart.chartdata = chartData;
     },
+
     async getSummaryRate() {
       const data = await api.BasicRequest(apiUrl + "/statistic/1/summary");
       const summary_data = await api.parseResponse(data.data);
@@ -194,23 +201,19 @@ export default {
   },
   mounted() {
     this.getAssetInfo();
-    this.getuserBalance();
-    this.getUserInfo();
     this.getFollowerInfo();
+  },
+
+  created() {
+    this.getuserBalance();
+    // this.getUserInfo();
     this.getSummaryRate();
     this.getFollowerNum();
   },
 
   data() {
     return {
-      userData: {
-        userid: "",
-        nickname: "",
-        tag: [],
-        followerCount: "",
-        ratio: ""
-      },
-
+      followerNum: "",
       userBalance: "",
       summaryRate: "",
 
@@ -506,7 +509,7 @@ html {
   width: 25rem;
   position: relative;
   top: 3em;
-  margin-left: 2em;
+  margin-left: 1em;
   font-size: 1.2em;
   font-weight: bold;
 }
@@ -523,7 +526,7 @@ html {
 
 .FlexArea {
   display: inline-flex;
-  width: 30%;
+  width: 40%;
   justify-content: flex-end;
 }
 .expectMoneyVal {

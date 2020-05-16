@@ -14,6 +14,9 @@
             # {{ tag }}
           </span>
         </span>
+
+          <button class="button" id="follow-button" v-on:click="follow_click">{{ follow_text }}</button>
+
       </div>
       <div class="flex-container">
         <card id="basic_info">
@@ -38,7 +41,7 @@
               </div>
               <div id="chartContainer">
                 <doughnut
-                  v-if="this.followerChart.loaded"
+                  v-if="this.assetChart.loaded"
                   :chart-data="this.assetChart.chartdata"
                   :options="this.assetChart.chartOptions"
                 ></doughnut>
@@ -52,7 +55,7 @@
             <div class="follower-contents">
               <div class="CardContents">
                 <div class="row">
-                  <span class="ContentText">내 팔로워 수</span>
+                  <span class="ContentText">팔로워 수</span>
                   <span class="FlexArea">
                     <span class="RateVal"> {{ followerNum }} </span>
                     <span class="expectMoneyVal counter">명</span>
@@ -244,7 +247,20 @@ export default {
 
       this.assetChart.loaded = true;
       this.assetChart.chartdata = chartData;
-    }
+    },
+
+      follow_click(){
+        let status = this.follow_status
+          if (status == -1){
+              this.follow_status = this.follow_status * -1
+              this.followerNum += 1
+              this.follow_text = "언팔로우"
+          } else {
+              this.follow_status = this.follow_status * -1
+              this.followerNum -= 1
+              this.follow_text = "팔로우"
+          }
+      }
   },
 
   created() {
@@ -261,7 +277,8 @@ export default {
       summaryRate: "",
       followerNum: "",
       introduce: "",
-
+      follow_status: -1,
+      follow_text: "팔로우",
       name: "코인투",
       tags: "",
       columns: [
@@ -532,5 +549,23 @@ export default {
 .chart-area {
   height: 300px;
   margin-bottom: 5em;
+}
+
+  #follow-button {
+    background-color: rgb(0, 89, 255);
+    color: white;
+    font-family: "Noto Sans KR", "Spoqa Han Sans", "Spoqa Han Sans JP", "Sans-serif";
+    border: none;
+    vertical-align: baseline;
+    margin-left: 37em;
+  }
+
+.button {
+  border: solid 1px rgb(67, 66, 93);
+  border-radius: 4px;
+  width: 5em;
+  height: 2em;
+  font-family: "Noto Sans KR", "Spoqa Han Sans", "Spoqa Han Sans JP",
+  "Sans-serif";
 }
 </style>
