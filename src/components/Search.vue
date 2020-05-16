@@ -7,9 +7,10 @@
                     <i class="fa fa-search" id="search"></i>
                     <div class="search-all">
                         <input type="text" class="input-field" placeholder="태그/암호화폐 검색" v-on:keydown="getSearch" v-model="sentence">
-
-                        <div class="search-box" id="search-box" v-for="result in searchList" v-bind:key="result">
-                            <div class="search-result" v-on:click="getAutoComplete(result)">{{result}}</div>
+                        <div class="search-big">
+                            <div class="search-box" id="search-box" v-for="result in searchList" v-bind:key="result">
+                                <div class="search-result" v-on:click="getAutoComplete(result)">{{result}}</div>
+                            </div>
                         </div>
                     </div>
                     <span class="toggle">
@@ -73,15 +74,11 @@
                 this.tagList = taglist;
             },
 
-            // seperation: function(it){
-            //     return it.includes(this.sentence);
-            // },
             getSearch() {
                 const taglist = this.tagList;
                 const searchlist = taglist.filter(it => it.includes(this.sentence));
                 this.searchList = searchlist;
 
-                console.log(this.searchList);
             },
 
             async getAutoComplete(sentence) {
@@ -153,24 +150,30 @@
     }
 
     .search-all {
-        display: flex;
+        /*display: flex;*/
+        position:relative;
         flex-direction: column;
+        width: 100%;
+    }
+
+    .search-big {
+        position: absolute;
+        width: 100%;
+
     }
 
     .search-box {
-        position: relative;
-        display: inline-block;
-        border: 1px solid rgb(61,67,77);
+        /*border: 1px solid rgb(61,67,77);*/
         list-style-type: none;
         padding: 0;
         margin: 0;
     }
 
     #search-box div{
-        padding: 12px;
+        padding: 1px;
         text-decoration: none;
         color: black;
-        display: block
+        display: block;
     }
 
     #search-box div:hover {
@@ -179,16 +182,15 @@
 
     .search-result {
         display: none;
-        position: absolute;
         background-color: #f9f9f9;
         min-width: 160px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        padding: 12px 16px;
+        padding: 1px 1px;
         z-index: 1;
+        flex-wrap: wrap;
     }
 
     .search-box:hover .search-result {
-        display: block;
     }
 
     .input-field {
