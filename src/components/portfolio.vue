@@ -106,8 +106,8 @@
   import CandleStick from "./CandleStick";
   import foot from "./footer";
   import api from "./api";
-  // const apiUrl = "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io";
-  const apiUrl = "http://api.trd-dog.jadekim.kr";
+  const apiUrl = "https://db8bfc1f-f0ec-415c-8562-c5ecc9ec2dd7.mock.pstmn.io";
+  //const apiUrl = "http://api.trd-dog.jadekim.kr";
 
   export default {
     name: "portfolio",
@@ -143,7 +143,7 @@
       },
 
       async getSummaryRate() {
-        const data = await api.BasicRequest(apiUrl + "/statistic/1/summary");
+        const data = await api.BasicRequest(apiUrl + "/statistic/{userId}/summary");
         const summary_data = await api.parseResponse(data.data);
         const summary = summary_data['data'];
         this.summaryRate = summary['returnRate'];
@@ -151,7 +151,7 @@
       },
 
       async getIntroduce() {
-        const data = await api.BasicRequest(apiUrl + "/user/1/introduction");
+        const data = await api.BasicRequest(apiUrl + "/user/{userId}/introduction");
         const intro_data = await api.parseResponse(data.data);
         this.introduce = intro_data['data'];
       },
@@ -160,12 +160,23 @@
         const data = await api.BasicRequest(apiUrl + "/statistic/1/state");
         const state_data = await api.parseResponse(data.data);
         const state_list = state_data['data'];
-        // need status table
-        //
-        // state_list.forEach(function(item,index) {
-        //   console.log(item,index);
-        // });
+        const rows = [];
 
+        state_list.forEach(function(item,index) {
+          console.log(item,index);
+          const content = {};
+          content.id = index;
+          content.coin_name = item.currency;
+          content.asset_ratio = item.returnRate;
+          content.earn_ratio = item.ratio;
+          content.active_order = item.minAskPrice;
+          content.active_ask = item.maxAskPrice;
+          content.recent_order = item.minBidPrice;
+          content.recent_ask = item.maxBidPrice;
+          rows.push(content);
+        });
+
+        this.rows = rows;
       },
 
       milToDate(milsec) {
@@ -175,7 +186,7 @@
 
       async getFollowerInfo() {
         const data = await api.BasicRequest(
-                apiUrl + "/user/1/follower/count/snapshot/1d"
+                apiUrl + "/user/{userId}/follower/count/snapshot/1d"
         );
         const chart_data = await api.parseResponse(data.data);
         // console.log(chart_data.data.items);
@@ -196,7 +207,7 @@
 
       async getAssetInfo() {
         const data = await api.BasicRequest(
-                apiUrl + "/statistic/summary"
+                apiUrl + "/statistic/{userId}/summary"
         );
         const asset_data = await api.parseResponse(data.data);
         console.log(asset_data.data.ratio);
@@ -228,7 +239,7 @@
       this.getSummaryRate();
       this.getFollowerNum();
       this.getIntroduce();
-      // this.getStatus();
+      this.getStatus();
     },
 
     data() {
@@ -275,14 +286,14 @@
         rows: "",
         // rows: [
         //   {
-        //     id: 1,
-        //     coin_name: "John",
-        //     asset_ratio: 20,
-        //     earn_ratio: 1.246,
-        //     active_order: 0.03343,
-        //     active_ask: 1234,
-        //     recent_order: 1234,
-        //     recent_ask: 4321
+            // id: 1,
+            // coin_name: "John",
+            // asset_ratio: 20,
+            // earn_ratio: 1.246,
+            // active_order: 0.03343,
+            // active_ask: 1234,
+            // recent_order: 1234,
+            // recent_ask: 4321
         //   },
         //   {
         //     id: 2,
