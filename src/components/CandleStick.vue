@@ -10,6 +10,7 @@
 import VueApexCharts from "vue-apexcharts";
 import api from "./api";
 const apiUrl = "http://api.trd-dog.jadekim.kr";
+const userId = 1;
 
 export default {
   name: "CandleStick",
@@ -38,18 +39,9 @@ export default {
             enabled: true
           }
         },
+
         annotations: {
-          xaxis: [
-            {
-              x: new Date(1574035200000).getTime(),
-              borderColor: "#775DD0",
-              label: {
-                style: {
-                  color: "#775DD0"
-                },
-              }
-            }
-          ]
+          xaxis: []
         }
       },
       series: [
@@ -66,13 +58,11 @@ export default {
       }
     };
   },
-  created() {
-
-  },
+  created() {},
   watch: {
     target() {
-      this.updateChart();
       this.getHistory();
+      this.updateChart();
     }
   },
   methods: {
@@ -106,15 +96,38 @@ export default {
       ];
     },
 
-      async getHistory(){
-          const date = this.getDate();
-          const data = await api.BasicRequest(
-              apiUrl +
-              `/exchange/1/order/history?tradePair=${this.target}&startDate=${date[0]}&endDate=${date[1]}`
-          );
-          const history_data = await api.parseResponse(data.data);
-          console.log(history_data)
-      }
+    async getHistory() {
+      const date = this.getDate();
+      const data = await api.BasicRequest(
+        apiUrl +
+          `/exchange/${userId}/order/history?tradePair=${this.target}&startDate=${date[0]}&endDate=${date[1]}`
+      );
+      const history_data = await api.parseResponse(data.data);
+      console.log(history_data.data.items);
+//         tradePair: String
+//         price: Double
+//         type: Enum<Int>
+//         status: Enum<Int>
+//         createdAt: Date
+        let history_x = []
+        for (let i of history_data.data.items){
+            if (i['tradePair'] === this.target) {
+                const buy_bar = {
+                    x: new Date(i['createdAt']),
+                    borderColor: i['type'] === "sold" ? '#FF0059FF' : '#FFFF0D00',
+                    //API 문서에서 enum<type> 정의 확실히 하고서 수정해야함.
+                    label: {
+                        style: {
+                            color: i['type'] === "sold" ? '#FF0059FF' : '#FFFF0D00'
+                        },
+                        text: i['type'] == "sold" ? `매도 - ${i['createdAt']}` : `매수 - ${i['createdAt']}`
+                    }
+                }
+                history_x.push(buy_bar)
+            }
+        }
+        this.options.annotations.xaxis = history_x
+    }
   }
 };
 </script>
