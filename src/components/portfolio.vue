@@ -145,6 +145,15 @@ export default {
       this.tags = user["tag"];
     },
 
+    async getUserName() {
+      const data = await api.BasicRequest(
+              apiUrl + `/user/${userId}`
+      );
+      const user_data = await api.parseResponse(data.data);
+      const user = user_data["data"];
+      this.name = user["nickname"];
+    },
+
     async getFollowerNum() {
       const data = await api.BasicRequest(
         apiUrl + `/user/${userId}/follower/count`
@@ -284,6 +293,7 @@ export default {
 
   created() {
     this.getTag();
+    this.getUserName();
     this.getUserBalance();
     this.getSummaryRate();
     this.getFollowerNum();
@@ -299,7 +309,7 @@ export default {
       introduce: "",
       follow_status: -1,
       follow_text: "팔로우",
-      name: "코인투",
+      name: "",
       tags: "",
       columns: [
         {
