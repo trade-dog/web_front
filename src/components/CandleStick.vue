@@ -39,10 +39,11 @@ export default {
             enabled: true
           }
         },
+          annotations: {
+            xaxis: [
 
-        annotations: {
-          xaxis: []
-        }
+            ]
+          }
       },
       series: [
         {
@@ -58,14 +59,17 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    this.getHistory();
+  },
   watch: {
     target() {
-      this.getHistory();
-      this.updateChart();
-    }
+        this.getHistory();
+
+        this.updateChart();
+    },
   },
-  methods: {
+    methods: {
     getDate() {
       const date = new Date();
       const now = Date.now();
@@ -104,29 +108,41 @@ export default {
       );
       const history_data = await api.parseResponse(data.data);
       console.log(history_data.data);
-//         tradePair: String
-//         price: Double
-//         type: Enum<Int>
-//         status: Enum<Int>
-//         createdAt: Date
-        let history_x = []
-        for (let i of history_data.data.items){
-            if (i['tradePair'] === this.target) {
-                const buy_bar = {
-                    x: new Date(i['createdAt']),
-                    borderColor: i['type'] === "sold" ? '#FF0059FF' : '#FFFF0D00',
-                    //API 문서에서 enum<type> 정의 확실히 하고서 수정해야함.
-                    label: {
-                        style: {
-                            color: i['type'] === "sold" ? '#FF0059FF' : '#FFFF0D00'
-                        },
-                        text: i['type'] == "sold" ? `매도 - ${i['createdAt']}` : `매수 - ${i['createdAt']}`
-                    }
+      let history_x = [];
+      for (let i of history_data.data.items) {
+        if (i["tradePair"] === this.target) {
+          // const target_date = new Date(i["createdAt"]).tost
+          const buy_bar = {
+            // x: new Date(i["createdAt"]).toString(),
+            x: i["createdAt"],
+            borderColor: i["type"] === "LIMIT_BUY" ? "#FF0059FF" : "#0d41ff",
+
+            label: {
+              borderColor: i["type"] === "LIMIT_BUY" ? "#FF0059FF" : "#0d41ff",
+              orientation: "vertical",
+              text:
+                i["type"] == "LIMIT_SELL"
+                  ? `매도 - ${new Date(i["createdAt"]).toLocaleString()}`
+                  : `매수 - ${new Date(i["createdAt"]).toLocaleString()}`,
+                style: {
+                    color: "#fff",
+                    background: i["type"] === "LIMIT_BUY" ? "#FF0059FF" : "#0d41ff",
                 }
-                history_x.push(buy_bar)
+            }
+          };
+          history_x.push(buy_bar);
+          // console.log(history_x)
+        }
+      }
+
+        this.options = {
+          ...this.options, ...{
+              annotations: {
+                  xaxis: history_x
+              }
             }
         }
-        this.options.annotations.xaxis = history_x
+
     }
   }
 };

@@ -555,7 +555,7 @@ export default {
     "Sans-serif";
   border: none;
   vertical-align: baseline;
-  margin-left: 35em;
+  margin-left: 32em;
 }
 
 .button {
