@@ -208,12 +208,12 @@ export default {
         const content = {};
         content.id = index;
         content.coin_name = item.currency;
-        content.asset_ratio = item.returnRate;
-        content.earn_ratio = item.ratio;
+        content.asset_ratio = item.ratio;
+        content.earn_ratio = item.returnRate;
         content.active_order = item.minAskPrice;
         content.active_ask = item.maxAskPrice;
-        content.recent_order = item.minBidPrice;
-        content.recent_ask = item.maxBidPrice;
+        content.recent_order = item.bidCount1Y;
+        content.recent_ask = item.askCount1Y;
         rows.push(content);
       });
 
