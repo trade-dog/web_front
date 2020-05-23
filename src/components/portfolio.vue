@@ -122,7 +122,6 @@ import foot from "./footer";
 import api from "./api";
 // const apiUrl = "https://a4a5e218-ec75-497b-9db0-ea32fce2e309.mock.pstmn.io";
 const apiUrl = "http://api.trd-dog.jadekim.kr";
-const userId = 8;
 
 export default {
   name: "portfolio",
@@ -145,7 +144,7 @@ export default {
       this.tags = user["tag"];
     },
 
-    async getUserName() {
+    async getUserName(userId) {
       const data = await api.BasicRequest(
               apiUrl + `/user/${userId}`
       );
@@ -154,7 +153,7 @@ export default {
       this.name = user["nickname"];
     },
 
-    async getFollowerNum() {
+    async getFollowerNum(userId) {
       const data = await api.BasicRequest(
         apiUrl + `/user/${userId}/follower/count`
       );
@@ -178,7 +177,7 @@ export default {
       const month_ago = date.setMonth(date.getMonth() - 1);
       return [now, month_ago];
     },
-    async getSummaryRate() {
+    async getSummaryRate(userId) {
       const data = await api.BasicRequest(
         apiUrl + `/statistic/${userId}/summary`
       );
@@ -188,7 +187,7 @@ export default {
       // need doughnut
     },
 
-    async getIntroduce() {
+    async getIntroduce(userId) {
       const data = await api.BasicRequest(
         apiUrl + `/user/${userId}/introduction`
       );
@@ -196,7 +195,7 @@ export default {
       this.introduce = intro_data["data"];
     },
 
-    async getStatus() {
+    async getStatus(userId) {
       const data = await api.BasicRequest(
         apiUrl + `/statistic/${userId}/state`
       );
@@ -221,7 +220,7 @@ export default {
       this.rows = rows;
     },
 
-    async getFollowerInfo() {
+    async getFollowerInfo(userId) {
       const date = this.getDate();
       const data = await api.BasicRequest(
         apiUrl +
@@ -244,7 +243,7 @@ export default {
       this.followerChart.chartdata = chartData;
     },
 
-      async getAssetInfo() {
+      async getAssetInfo(userId) {
           const data = await api.BasicRequest(
               apiUrl + `/statistic/${userId}/summary`
           );
@@ -293,16 +292,17 @@ export default {
 
   created() {
     this.getTag();
-    this.getUserName();
+    this.getUserName(this.userIdUrl);
     this.getUserBalance();
-    this.getSummaryRate();
-    this.getFollowerNum();
-    this.getIntroduce();
-    this.getStatus();
+    this.getSummaryRate(this.userIdUrl);
+    this.getFollowerNum(this.userIdUrl);
+    this.getIntroduce(this.userIdUrl);
+    this.getStatus(this.userIdUrl);
   },
 
   data() {
     return {
+      userIdUrl: this.$route.params.id,
       balance: "",
       summaryRate: "",
       followerNum: "",
@@ -393,8 +393,8 @@ export default {
   },
 
   mounted() {
-    this.getAssetInfo();
-    this.getFollowerInfo();
+    this.getAssetInfo(this.userIdUrl);
+    this.getFollowerInfo(this.userIdUrl);
   }
 };
 </script>

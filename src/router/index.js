@@ -5,6 +5,7 @@ import portfolio from "@/components/portfolio";
 import Search from "../components/Search";
 import login from "../components/login";
 import ModUser from "../components/ModUser";
+import TrendCard from "../components/TrendCard"
 
 Vue.use(Router)
 
@@ -22,7 +23,7 @@ export default new Router({
             component: Search
         },
         {
-            path: '/portfolio',
+            path: '/portfolio/:id',
             name: 'Portfolio',
             component: portfolio
         },

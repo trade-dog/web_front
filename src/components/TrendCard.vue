@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+    <router-link :to="{ name: 'Portfolio', params: { id: this.trendData.user_id } }">
     <div class="content-area">
       <div class="top-text">
         <div class="data">{{ this.trendData.name }}</div>
@@ -15,7 +16,7 @@
         <div class="earn-rate">
           <p class="content-text-title">수익률</p>
           <p class="earn_rate_value"
-             :style="this.trendData.earn_rate > 0 ? {'color': 'rgb(0,89,255)'} : {'color': 'rgb(255,13,0)'}">{{ this.trendData.earn_rate.toFixed(4)}}%</p>
+             :style="this.trendData.earn_rate > 0 ? {'color': 'rgb(255,13,0)'} : {'color': 'rgb(0,89,255)'}">{{ this.trendData.earn_rate.toFixed(4)}}%</p>
         </div>
         <hr>
         <div class="asset-rate">
@@ -35,7 +36,7 @@
 
 
     </div>
-
+    </router-link>
   </div>
 </template>
 
