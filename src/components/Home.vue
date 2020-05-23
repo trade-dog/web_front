@@ -215,9 +215,9 @@ export default {
         trend_content.tags = item.tag;
         trend_content.earn_rate = item.returnRate;
         trend_content.asset_rate = item.ratio;
+        trend_content.user_id = item.userId;
         trendrow.push(trend_content);
       });
-      console.log(trendrow);
       this.trendData = trendrow;
     }
   },
