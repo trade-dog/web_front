@@ -10,7 +10,7 @@
 import VueApexCharts from "vue-apexcharts";
 import api from "./api";
 const apiUrl = "http://api.trd-dog.jadekim.kr";
-const userId = 1;
+// const userId = 8;
 
 export default {
   name: "CandleStick",
@@ -22,7 +22,12 @@ export default {
       type: String,
       default: null,
       required: true
-    }
+    },
+      user: {
+
+          default: null,
+          required: true
+      }
   },
   data() {
     return {
@@ -104,7 +109,7 @@ export default {
       const date = this.getDate();
       const data = await api.BasicRequest(
         apiUrl +
-          `/exchange/${userId}/order/history?tradePair=${this.target}&startDate=${date[0]}&endDate=${date[1]}`
+          `/exchange/${this.user}/order/history?tradePair=${this.target}&startDate=${date[0]}&endDate=${date[1]}`
       );
       const history_data = await api.parseResponse(data.data);
       console.log(history_data.data);

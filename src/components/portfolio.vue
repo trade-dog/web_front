@@ -98,7 +98,7 @@
         </select>
       </div>
       <div class="content-area">
-        <candle-stick :target="selected"></candle-stick>
+        <candle-stick :target="selected" :user="userIdUrl"></candle-stick>
       </div>
     </div>
     <grey-background>
