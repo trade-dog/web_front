@@ -119,11 +119,11 @@ export default {
 
             label: {
               borderColor: i["type"] === "LIMIT_BUY" ? "#FF0059FF" : "#0d41ff",
-              orientation: "vertical",
+              orientation: "horizontal",
               text:
                 i["type"] == "LIMIT_SELL"
-                  ? `매도 - ${new Date(i["createdAt"]).toLocaleString()}`
-                  : `매수 - ${new Date(i["createdAt"]).toLocaleString()}`,
+                  ? `매도`
+                  : `매수`,
                 style: {
                     color: "#fff",
                     background: i["type"] === "LIMIT_BUY" ? "#FF0059FF" : "#0d41ff",
