@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+    <router-link :to="{ name: 'Portfolio', params: { id: this.trendData.user_id } }">
     <div class="content-area">
       <div class="top-text">
         <div class="data">{{ this.trendData.name }}</div>
@@ -35,7 +36,7 @@
 
 
     </div>
-
+    </router-link>
   </div>
 </template>
 
