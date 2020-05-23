@@ -10,7 +10,7 @@
 import VueApexCharts from "vue-apexcharts";
 import api from "./api";
 const apiUrl = "http://api.trd-dog.jadekim.kr";
-const userId = 8;
+const userId = 1;
 
 export default {
   name: "CandleStick",
@@ -80,7 +80,7 @@ export default {
       const date = this.getDate();
       const data = await api.BasicRequest(
         apiUrl +
-          `/chart/candle/${this.target}?startDate=${date[0]}&endDate=${date[1]}`
+          `/chart/candle/${this.target}?startDate=${date[1]}&endDate=${date[0]}`
       );
       const candle_Data = await api.parseResponse(data.data);
       // console.log(candle_Data.data.items)
