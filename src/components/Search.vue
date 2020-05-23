@@ -52,7 +52,7 @@
     import api from "./api";
 
     const apiUrl = "http://api.trd-dog.jadekim.kr";
-    //const apiUrl = "https://db8bfc1f-f0ec-415c-8562-c5ecc9ec2dd7.mock.pstmn.io";
+    // const apiUrl = "https://db8bfc1f-f0ec-415c-8562-c5ecc9ec2dd7.mock.pstmn.io";
 
     export default {
         name: "search",
