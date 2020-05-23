@@ -6,7 +6,8 @@
                 <div class="search">
                     <i class="fa fa-search" id="search"></i>
                     <div class="search-all">
-                        <input type="text" class="input-field" placeholder="태그/암호화폐 검색" v-on:keydown="getSearch" v-model="sentence">
+                        <input type="text" class="input-field" placeholder="태그/코인별 상세검색"  v-on:keydown="getSearch" v-model="sentence">
+
                         <div class="search-big">
                             <div class="search-box" id="search-box" v-for="result in searchList" v-bind:key="result">
                                 <div class="search-result" v-on:click="getAutoComplete(result)">{{result}}</div>
@@ -102,6 +103,7 @@
                     }
                 });
 
+                this.sentence = sentence;
                 this.trendData = trendrow;
             },
 
