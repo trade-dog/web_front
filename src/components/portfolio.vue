@@ -27,15 +27,15 @@
               <div class="CardContents">
                 <div class="row">
                   <span class="ContentText">수익률</span>
-                  <span class="FlexArea">
+                  <span class="FlexArea card-left">
                     <span class="RateVal"> {{ summaryRate }} </span>
                     <span class="expectMoneyVal counter">%</span>
                   </span>
                 </div>
                 <div class="row">
                   <span class="ContentText">평가금액</span>
-                  <span class="FlexArea">
-                    <span class="expectMoneyVal"> {{ balance }} </span>
+                  <span class="FlexArea card-left">
+                    <span class="expectMoneyVal"> {{ balance.toLocaleString(undefined, {maximumFractionDigits: 4}) }} </span>
                     <span class="expectMoneyVal counter">KRW</span>
                   </span>
                 </div>
@@ -555,7 +555,7 @@ export default {
     "Sans-serif";
   border: none;
   vertical-align: baseline;
-  margin-left: 37em;
+  margin-left: 35em;
 }
 
 .button {
@@ -566,4 +566,8 @@ export default {
   font-family: "Noto Sans KR", "Spoqa Han Sans", "Spoqa Han Sans JP",
     "Sans-serif";
 }
+
+  .card-left {
+    width: 50%;
+  }
 </style>

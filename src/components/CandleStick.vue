@@ -10,7 +10,7 @@
 import VueApexCharts from "vue-apexcharts";
 import api from "./api";
 const apiUrl = "http://api.trd-dog.jadekim.kr";
-const userId = 1;
+const userId = 8;
 
 export default {
   name: "CandleStick",
@@ -103,7 +103,7 @@ export default {
           `/exchange/${userId}/order/history?tradePair=${this.target}&startDate=${date[0]}&endDate=${date[1]}`
       );
       const history_data = await api.parseResponse(data.data);
-      console.log(history_data.data.items);
+      console.log(history_data.data);
 //         tradePair: String
 //         price: Double
 //         type: Enum<Int>
