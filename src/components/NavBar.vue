@@ -2,11 +2,12 @@
   <header>
     <div class="content-area">
       <a href="#">
-        <router-link to="/">
-        <img
-          src="https://coinone.co.kr/common/assets/images/coinone_logo/coinone_logo_blue.svg"
-          id="logo"
-        /></router-link>
+        <router-link to="/"><span id="logo_title">TradeDog</span>
+<!--        <img-->
+<!--          src="https://coinone.co.kr/common/assets/images/coinone_logo/coinone_logo_blue.svg"-->
+<!--          id="logo"-->
+<!--        />-->
+        </router-link>
       </a>
       <div class="items">
         <a href="#"><span class="nav_text"><router-link to="/search">상세 검색</router-link></span></a>
@@ -58,5 +59,13 @@ header {
 
   a {
     text-decoration: none !important;
+  }
+
+  #logo_title {
+    font-family: 'Spoqa Han Sans', 'Noto Sans KR', 'Sans-serif';
+    font-weight: bold;
+    font-size: 2em;
+    color: #03308f;
+
   }
 </style>
